@@ -19,6 +19,18 @@ exports.user_signup = function (req, res) {
 
 exports.user_login = function (req, res) {
     return res.json({
-        message: 'not implemented: user sign up'
+        message: 'not implemented: user login'
+    });
+};
+
+exports.user_create_profile = function (req, res) {
+    return res.json({
+        message: 'not implemented: create profile'
+    });
+};
+
+exports.user_addpic = function (req, res) {
+    return res.json({
+        message: 'not implemented: user add picture'
     });
 };
