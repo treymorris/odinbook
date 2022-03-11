@@ -11,6 +11,9 @@ router.post('/signup', user_controller.user_signup);
 // POST user log in
 router.post('/login', user_controller.user_login);
 
+// GET user log out
+router.post('/logout', user_controller.user_logout)
+
 // POST user add profile
 router.post('/create', user_controller.user_create_profile);
 

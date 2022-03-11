@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     first_name: { type: String, required: true, maxLength: 25 },
     last_name: { type: String, required: true, maxLength: 25 },
+    password: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: String, minLength: 5 },
+    username: { type: String, minLength: 5 },
     profile_pic: { type: String },
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
