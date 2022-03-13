@@ -17,7 +17,7 @@ router.post('/logout', user_controller.user_logout)
 // POST user add profile
 router.post('/create', user_controller.user_create_profile);
 
-// POST user add profile picture
-router.post('/addpic', user_controller.user_addpic);
+//PUT user update profile
+router.put('/update', user_controller.user_profile_update)
 
 module.exports = router;

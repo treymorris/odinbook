@@ -3,8 +3,6 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 const JWTStrategy = require("passport-jwt").Strategy;
 const extractJWT = require("passport-jwt").ExtractJwt;
-
-
 const User = require("../models/user");
 
 // passport setup
@@ -20,16 +18,6 @@ passport.use(new LocalStrategy(
     });
   })
 );
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-  
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-      done(err, user);
-    });
-  });
 
 passport.use(
   new JWTStrategy(
