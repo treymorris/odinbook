@@ -8,8 +8,8 @@ const UserSchema = new Schema({
     email: { type: String, required: true },
     username: { type: String, minLength: 5 },
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    friend_requests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friends: [],
+    friend_requests: [],
     facebook_id: { type: String, required: false }
 });
 
@@ -17,7 +17,7 @@ const UserSchema = new Schema({
 UserSchema
 .virtual('name')
 .get(function () {
-// To avoid errors in cases where an author does not have either a family name or first name
+// To avoid errors in cases where a User does not have either a family name or first name
 // We want to make sure we handle the exception by returning an empty string for that case
   var fullname = '';
   if (this.first_name && this.last_name) {
@@ -28,5 +28,13 @@ UserSchema
   }
   return fullname;
 });
+
+// Virtual for user's URL
+UserSchema
+.virtual('url')
+.get(function () {
+  return '/users/' + this._id;
+});
+
 
 module.exports = mongoose.model('User', UserSchema);

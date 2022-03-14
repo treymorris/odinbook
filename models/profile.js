@@ -7,11 +7,8 @@ const ProfileSchema = new Schema({
     birth_date: { type: Date },
     occupation: { type: String, maxlength: 25 },
     profile_pic: { type: String },
-    hobbies: { type: String, maxlength: 250 }
+    hobbies: [{ type: String, maxlength: 250 }]
 });
-    
-
-
 
 
 module.exports = mongoose.model('Profile', ProfileSchema);

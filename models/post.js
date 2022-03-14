@@ -3,12 +3,11 @@ const Schema = mongoose.Schema;
 const { DateTime } = require('luxon');
 
 const PostSchema = new Schema({
-    author: { type: Schema.Types.ObjectId, ref: 'User' },
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
     content: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    comments: { type: Schema.Types.ObjectId, ref: 'Comment' },
-    img_url: { type: String, required: false },
-    likes: { type: Schema.Types.ObjectId, ref: 'User' }
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 PostSchema
@@ -16,5 +15,12 @@ PostSchema
     .get(function () {
         return DateTime.fromJSDate(this.date).toLocaleString(DateTime.DATETIME_MED);
     });
+
+// Virtual for post's URL
+PostSchema
+.virtual('url')
+.get(function () {
+  return '/posts/' + this._id;
+});
 
 module.exports = mongoose.model('Post', PostSchema);

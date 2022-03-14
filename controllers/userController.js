@@ -9,16 +9,23 @@ const Post = require('../models/post');
 const Profile = require("../models/profile");
 
 exports.get_users = function (req, res) {
-    User.find({}, 'first_name last_name friend_requests')
+    User.find({})
         .sort({ name: 1 })
-        .populate('friend_requests')
-        .exec(function (err, user_list) {
+        .populate('posts')
+        ,populate('friends')
+        .exec(function (err, results) {
             if (err) { return next(err) }
             res.status(200).json({
-                user_list: user_list
+                data: results
             });
         });
-    };
+};
+    
+exports.get_one_user = function (req, res) {
+    res.json({
+        message: 'not implemented'
+    })
+}
 
 exports.user_signup = [
     body('first_name', 'Please enter a first name!').trim().isLength({ min: 1 }).escape(),
@@ -71,8 +78,8 @@ exports.user_logout = function (req, res) {
 };
 
 exports.user_create_profile = [
-    body('occupation', 'Please enter your occupation.').trim().isLength({ max: 25 }).escape(),
-    body('hobbies', 'Please enter a hobby.').trim().isLength({ max: 250 }).escape(),
+    body('occupation', 'Please enter your occupation.').optional().trim().isLength({ max: 25 }).escape(),
+    body('hobbies', 'Please enter a hobby.').optional().trim().isLength({ max: 250 }).escape(),
         
         (req, res, next) => {
             const errors = validationResult(req);
@@ -81,7 +88,7 @@ exports.user_create_profile = [
 
 
             const profile = new Profile({
-                user: req.user._id,
+                user: req.body.user,
                 birth_date: req.body.birth_date,
                 occupation: req.body.occupation,
                 profile_pic: req.body.profile_pic,
@@ -107,19 +114,26 @@ exports.user_profile_update = [
 
 
             const profile = new Profile({
-                user: req.user._id,
+                user: req.body.user,
                 birth_date: req.body.birth_date,
                 occupation: req.body.occupation,
                 profile_pic: req.body.profile_pic,
                 hobbies: req.body.hobbies,
-                _id: req.params.id
-            })
-            .save(function (err) {
-                if (err) { return next(err); }
+                _id: req.body._id
             });
-            res.json({
-                message: 'Profile created!'
+            Profile.findByIdAndUpdate(req.body._id, profile, {}, function (err, theprofile) {
+                    if (err) { return next(err); }
+                    res.json({
+                        message: 'Profile updated!',
+                        user: theprofile
+                    });
             });
         }
 ]
 
+exports.delete_user = function (req, res, next) {
+    User.findByIdAndRemove(req.params.id, function deleteUser(err) {
+        if (err) { return next(err); }
+        res.json({message: 'User Deleted!'})
+    })
+}

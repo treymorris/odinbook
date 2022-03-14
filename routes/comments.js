@@ -10,15 +10,15 @@ router.get('/', comment_controller.get_comments);
 router.get('/:id', comment_controller.get_one_comment);
 
 // POST create comment
-router.post('/create', verifyToken, comment_controller.create_comment);
+router.post('/create', comment_controller.create_comment);
 
 // PUT update comment
-router.put('/:id/edit', verifyToken, comment_controller.edit_comment);
+router.put('/:id/edit', comment_controller.edit_comment);
 
 // PUT like comment
-router.put('/:id/like', verifyToken, comment_controller.like_comment);
+router.put('/:id/like', comment_controller.like_comment);
 
 // DELETE comment
-router.delete('/:id/delete', verifyToken, comment_controller.delete_comment);
+router.delete('/:id/delete', comment_controller.delete_comment);
 
 module.exports = router;
