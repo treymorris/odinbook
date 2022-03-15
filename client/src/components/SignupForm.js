@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import  Navbar  from './Navbar';
 
 function SignupForm() {
 
@@ -34,6 +34,7 @@ function SignupForm() {
 
     return (
         <div>
+            <Navbar />
             <h1 className="text-light text-center " >Sign Up!</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">

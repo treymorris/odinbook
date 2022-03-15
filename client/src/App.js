@@ -1,6 +1,6 @@
 import './App.css';
 
-import Navbar from './components/Navbar';
+
 import UserHome from './components/UserHome';
 import SignupForm from './components/SignupForm';
 import Login from './components/Login';
@@ -17,6 +17,7 @@ function App() {
   return (
     <div>
       <Router>
+      
         <Routes>
           <Route path='/' element={<Login />}/>
           <Route path='/signup' element={<SignupForm />} />
