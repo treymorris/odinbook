@@ -23,6 +23,7 @@ exports.get_one_post = function (req, res) {
 };
 
 exports.create_post = [
+    body('title', 'Please enter a title!').trim().isLength({ min: 1 }).escape(),
     body('content', 'Please enter content!').trim().isLength({ min: 1, max: 300 }).escape(),
     
     (req, res, next) => {
@@ -32,6 +33,7 @@ exports.create_post = [
 
         const post = new Post({
             user: req.body.user,
+            title: req.body.title,
             content: req.body.content,
             comments: [],
             likes: []

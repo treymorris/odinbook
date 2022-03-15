@@ -4,6 +4,7 @@ const { DateTime } = require('luxon');
 
 const PostSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User' },
+    title: {type: String, minlength: 1},
     content: { type: String, required: true },
     date: { type: Date, default: Date.now },
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
