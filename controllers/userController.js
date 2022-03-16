@@ -28,8 +28,8 @@ exports.get_one_user = function (req, res) {
 }
 
 exports.user_signup = [
-    body('first_name', 'Please enter a first name!').trim().isLength({ min: 1 }).escape(),
-    body('last_name', 'Please enter a last name!').trim().isLength({ min: 1 }).escape(),
+    body('firstname', 'Please enter a first name!').trim().isLength({ min: 1 }).escape(),
+    body('lastname', 'Please enter a last name!').trim().isLength({ min: 1 }).escape(),
     body('username', 'Please enter a Username!').trim().isLength({ min: 1 }).escape(),
     body('email', 'Email required!').trim().isEmail().escape(),
     body('password', 'Please enter a password!').trim().isLength({ min: 5 }).escape(),
@@ -40,8 +40,8 @@ exports.user_signup = [
         bcrypt.hash(req.body.password, 10, (err, hashedPass) => {
             if (err) return next(err);
             const user = new User({
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
                 email: req.body.email,
                 password: hashedPass,
                 username: req.body.username,
@@ -50,8 +50,10 @@ exports.user_signup = [
                 friend_requests: []
             })
                 .save((err, user) => {
-                    if (err) { return next(err) };
-                    jwt.sign({ user }, process.env.SECRET, (err, token) => { res.status(200).json({ token, message: 'Sign Up Success!' }) });
+                    if (err) { return next(err); }
+                    return res.json({
+                        message: 'success!'
+                    })
                 });
         });
     }
@@ -135,5 +137,28 @@ exports.delete_user = function (req, res, next) {
     User.findByIdAndRemove(req.params.id, function deleteUser(err) {
         if (err) { return next(err); }
         res.json({message: 'User Deleted!'})
+    })
+}
+
+exports.users_posts = function (req, res, next) {
+    async.parallel({
+        user: function (callback) {
+            User.findById(req.params.id)
+            .exec(callback)
+        },
+        users_posts: function (callback) {
+            Post.find({ 'user': req.params.id }, 'title content')
+            .exec(callback)
+        },
+    }, function (err, results) {
+        if (err) { return next(err); } //error in API usage
+        if (results.user == null) { // No results
+            let err = new Error('User not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.json({
+            users_posts: results.users_posts
+        })
     })
 }

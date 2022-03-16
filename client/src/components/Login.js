@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 
-function Login(props) {
+function Login() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -48,7 +48,7 @@ function Login(props) {
             <h1 className="text-light text-center mt-5 mb-5">OdinBook</h1>
             <form onSubmit={handleSubmit}>
                 <div >
-                    <div className="mb-2 w-50 mx-auto">
+                     <div className="mb-3 w-50 mx-auto">
                         <input
                             placeholder='Username'
                             type="username"
@@ -57,7 +57,7 @@ function Login(props) {
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
-                    <div className="mb-2 w-50 mx-auto">
+                    <div className="mb-3 w-50 mx-auto">
                         <input
                             placeholder='Password'
                             type="password"
@@ -66,18 +66,36 @@ function Login(props) {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                </div>
-                    
-                    <div class="d-grid gap-2 col-6 mx-auto">
-                        <button class="btn btn-primary" type="button" onClick={handleSubmit}>Log In</button>
-                        <button class="btn btn-primary" type="button" onClick={handleNewAccount} >Create New Account</button>
-                        <button class="btn btn-primary" type="button" onClick={handleFacebook}>Log In with Facebook</button>
-                        <button class="btn btn-primary" type="button" onClick={handleGoogle}>Log In with Google</button>
-                    </div>
-                </form>
+               </div>
+                    <div className="d-grid gap-2 col-6 mx-auto">
+                        <button
+                            className="btn btn-primary"
+                            type="button"
+                            onClick={handleSubmit}
+                        >Log In
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            type="button"
+                            onClick={handleNewAccount}
+                        >Create New Account
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            type="button"
+                            onClick={handleFacebook}
+                        >Log In with Facebook
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            type="button"
+                            onClick={handleGoogle}
+                        >Log In with Google
+                        </button>
+                  </div>
+            </form>
         </div>
-    
-  );
+     );
 }
 
 export default Login;

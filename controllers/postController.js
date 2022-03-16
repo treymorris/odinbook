@@ -9,9 +9,7 @@ exports.get_posts = function (req, res) {
         .sort({ date: desc })
         .exec(function (err, posts) {
             if (err) return handleError(err);
-            res.json({
-                posts: posts
-            });
+            res.json({posts});
     })
     
 };

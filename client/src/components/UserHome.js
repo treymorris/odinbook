@@ -16,7 +16,7 @@ function Home() {
                     <p className='text-light mb-5 text-center'>Welcome to OdinBook!</p>
                 </div>
             </section>
-                    <h4 className='text-light text-center'>Posts</h4>
+                    <h4 className='text-light text-center'>Your Posts</h4>
             <section className="row p-3 pt-1 w-100">
                     <Post />
             </section>

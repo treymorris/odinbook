@@ -11,7 +11,7 @@ function Post() {
 
     const fetchItems = async () => {
 
-        const data = await fetch('/api/posts');
+        const data = await fetch('/api/users/posts');
 
         const posts = await data.json();
 

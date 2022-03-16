@@ -10,10 +10,10 @@ router.get('/', user_controller.get_users);
 router.get('/:id', user_controller.get_one_user);
 
 // POST user sign up
-router.post('/signup', verifyToken, user_controller.user_signup);
+router.post('/signup', user_controller.user_signup);
 
 // POST user log in
-router.post('/login', verifyToken, user_controller.user_login);
+router.post('/login', user_controller.user_login);
 
 // GET user log out
 router.post('/logout', user_controller.user_logout);
@@ -25,6 +25,9 @@ router.post('/create', verifyToken, user_controller.user_create_profile);
 router.put('/update', verifyToken, user_controller.user_profile_update);
 
 //DELETE user 
-router.delete('/delete/:id', verifyToken, user_controller.delete_user)
+router.delete('/delete/:id', verifyToken, user_controller.delete_user);
+
+// GET users posts
+router.get('/posts', verifyToken, user_controller.users_posts);
 
 module.exports = router;
