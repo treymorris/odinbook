@@ -5,6 +5,7 @@ function Login() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,6 +25,8 @@ function Login() {
             .then(data => {
                 console.log(data)
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('userid', data.userid)
+                //add if statement checking that login is validated
                 window.location.href = '/UserHome'
             })
             .catch(error => {

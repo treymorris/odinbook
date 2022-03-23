@@ -7,24 +7,22 @@ function Post() {
         fetchItems();
     }, []);
 
-    const [posts, setPosts] = useState([]);
 
     const fetchItems = async () => {
-
-        const data = await fetch('/api/users/posts');
-
+        const data = await fetch('api/posts');
         const posts = await data.json();
 
-        console.log(posts);
-        setPosts(posts);
+        setPosts(posts.post_list)
     };
 
+    const [posts, setPosts] = useState([]);
 
     return (
         
-        <div>
+        <div className='container-fluid'>
+            <h5 className='text-light'>Posts</h5>
             {posts.map(post => (
-            <div className="card" key={post._id}>
+            <div className="card w-75" key={post._id}>
                 <img src="" className="card-img-top" alt="" />
                 <div className="card-body">
                     <h5 className="card-title text-dark">{post.title}</h5>

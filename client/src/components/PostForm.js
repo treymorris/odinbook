@@ -2,15 +2,18 @@ import { useState } from 'react';
 
 
 
+
 function PostForm() {
 
   const [post, setPost] = useState('');
   const [title, setTitle] = useState('');
-   
+  const userid = localStorage.getItem('userid')
+    console.log(userid);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
+      
 
     fetch('/api/posts/create', {
       method: 'POST',
@@ -21,7 +24,8 @@ function PostForm() {
       },
       body: JSON.stringify({
         title,
-        post
+        post,
+        _id: userid
       }),
     })
       .then(response => response.json())
@@ -37,31 +41,23 @@ function PostForm() {
   
     return (
       <div>
-        <h1 className="text-light mb-3">Create a new Post!</h1>
+        <h1 className="text-light  text-center mb-5 mt-5">Create a new Post!</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-            <label
-              htmlFor="title"
-              className="form-label text-light">
-              Title
-            </label>
             <input
               type="text"
               className="form-control"
               id="postTitle"
+              placeholder="Title"
               onChange={(e) => setTitle(e.target.value)}
             />
             </div>
             <div className="mb-3">
-            <label
-              htmlFor="post"
-              className="form-label text-light">
-              Post It!
-            </label>
             <textarea
-              name='post'
+              name='content'
               className="form-control"
               id="postText"
+              placeholder='Post Content'
               rows="3"
               onChange={(e) => setPost(e.target.value)}>
             </textarea>

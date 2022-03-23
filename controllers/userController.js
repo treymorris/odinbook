@@ -10,22 +10,40 @@ const Profile = require("../models/profile");
 
 exports.get_users = function (req, res) {
     User.find({})
-        .sort({ name: 1 })
-        .populate('posts')
-        ,populate('friends')
-        .exec(function (err, results) {
+        .sort([['username', 'ascending']])
+        .exec(function (err, list_users) {
             if (err) { return next(err) }
             res.status(200).json({
-                data: results
+                user_list: list_users
             });
         });
 };
     
-exports.get_one_user = function (req, res) {
-    res.json({
-        message: 'not implemented'
-    })
-}
+exports.get_one_user = function (req, res, next) {
+
+    async.parallel({
+        user: function (callback) {
+            User.findById(req.params.id)
+                .exec(callback)
+        },
+        users_posts: function (callback) {
+            Post.find({ 'author': req.params.id }, 'title post')
+                .exec(callback)
+        },
+    }, function (err, results) {
+        if (err) { return next(err); }
+        if (results.user == null) {
+            var err = new Error('User not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.json({
+            message: 'get one user',
+            user: results.user,
+            users_posts: results.users_posts
+        });
+    });
+};
 
 exports.user_signup = [
     body('firstname', 'Please enter a first name!').trim().isLength({ min: 1 }).escape(),
@@ -69,7 +87,7 @@ exports.user_login = [
         passport.authenticate('local', { session: false }, (err, user) => {
             if (err || !user) {
                 return res.status(401).json({ message: 'Incorrect Email or Password!', user });
-            } jwt.sign({ user }, process.env.SECRET, { expiresIn: '10m' }, (err, token) => { res.json({ token }) });
+            } jwt.sign({ user }, process.env.SECRET, { expiresIn: '10m' }, (err, token) => { res.json({ token, userid: user._id }) });
         })(req,res);
     }
 ];
@@ -134,31 +152,17 @@ exports.user_profile_update = [
 ]
 
 exports.delete_user = function (req, res, next) {
-    User.findByIdAndRemove(req.params.id, function deleteUser(err) {
+    User.findByIdAndRemove(req.body.userid, function deleteUser(err) {
         if (err) { return next(err); }
         res.json({message: 'User Deleted!'})
     })
 }
 
-exports.users_posts = function (req, res, next) {
-    async.parallel({
-        user: function (callback) {
-            User.findById(req.params.id)
-            .exec(callback)
-        },
-        users_posts: function (callback) {
-            Post.find({ 'user': req.params.id }, 'title content')
-            .exec(callback)
-        },
-    }, function (err, results) {
-        if (err) { return next(err); } //error in API usage
-        if (results.user == null) { // No results
-            let err = new Error('User not found');
-            err.status = 404;
-            return next(err);
-        }
-        res.json({
-            users_posts: results.users_posts
-        })
-    })
-}
+// exports.users_posts = function (req, res, next) {
+    
+//     Post
+//         .find({ 'user': req.body._id })
+//         .exec(function (err, posts) {
+//             if (err) return handleError(err);
+//         });
+// };

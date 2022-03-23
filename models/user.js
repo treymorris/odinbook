@@ -21,9 +21,9 @@ UserSchema
 // We want to make sure we handle the exception by returning an empty string for that case
   var fullname = '';
   if (this.first_name && this.last_name) {
-    fullname = this.last_name + ', ' + this.first_name
+    fullname = this.lastname + ', ' + this.firstname
   }
-  if (!this.first_name || !this.last_name) {
+  if (!this.firstname || !this.lastname) {
     fullname = '';
   }
   return fullname;

@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
 
+  
   return (
     <div>
       <Router>
@@ -26,7 +27,7 @@ function App() {
           <Route path='/create' element={<PostForm />} />
         </Routes>
       </Router>
-      <footer className='fixed-bottom'>
+      <footer>
         <Footer />
       </footer>
       
