@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    let navigate = useNavigate();
     
 
     const handleSubmit = (e) => {
@@ -24,18 +27,21 @@ function Login() {
             .then(response => response.json())//catch token here and save to local storage
             .then(data => {
                 console.log(data)
-                localStorage.setItem('token', data.token)
-                localStorage.setItem('userid', data.userid)
-                //add if statement checking that login is validated
-                //window.location.href = '/UserHome'
-            })
+                if (data.token) {
+                    localStorage.setItem('token', data.token)
+                    localStorage.setItem('userid', data.userid)
+                    navigate('/UserHome')
+                } else if (data.errors) {
+                    navigate('/')
+                }
+               })
             .catch(error => {
                 console.log(error)
             });
     };
     
     const handleNewAccount = () => {
-        window.location.href = '/signup'
+        navigate('/signup')
     }
 
     const handleFacebook = () => {

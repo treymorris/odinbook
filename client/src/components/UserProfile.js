@@ -7,10 +7,10 @@ function UserIndex() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchUser();
+      fetchUser();
    }, []);
 
-  const [user, setUser] = useState({});
+  
 
   const fetchUser = async () => {
     const data = await fetch(`api/users/${id}`)
@@ -18,11 +18,16 @@ function UserIndex() {
 
     console.log(user.user)
     setUser(user.user)
-  }
+  };
 
-    return (
+  const [user, setUser] = useState({});
+
+  return (
+      
       <div>
-        <h1 className='text-light'>Hello from {user.username}</h1>
+      <h1 className='text-light text-center'>{user.username}</h1>
+      <p className='text-light'>{user.first_name} {user.last_name}</p>
+      <p className='text-light'>{user.email}</p>
       </div>
     
   );
