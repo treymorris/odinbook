@@ -6,7 +6,7 @@ import SignupForm from './components/SignupForm';
 import Login from './components/Login';
 import ProfileForm from './components/ProfileForm';
 import Footer from './components/Footer';
-import UserIndex from './components/UserIndex'
+import UserProfile from './components/UserProfile'
 import PostForm from './components/PostForm'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -23,7 +23,7 @@ function App() {
           <Route path='/signup' element={<SignupForm />} />
           <Route path='/userHome' element={<UserHome />} />
           <Route path='/updateProfile' element={<ProfileForm />} />
-          <Route path='/userIndex' element={<UserIndex />} />
+          <Route path='/:id' element={<UserProfile />} />
           <Route path='/create' element={<PostForm />} />
         </Routes>
       </Router>

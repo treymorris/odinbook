@@ -10,7 +10,7 @@ function Navbar() {
 
 
   return (
-      <nav className='navbar mt-3 mb-3'>
+      <nav className='navbar'>
           <div className='container-fluid'>
               <div className='nav mx-auto'>
                     <NavLink className='p-3 nav-link' to='/userHome'>Home</NavLink>

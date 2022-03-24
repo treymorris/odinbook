@@ -27,7 +27,7 @@ function Login() {
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('userid', data.userid)
                 //add if statement checking that login is validated
-                window.location.href = '/UserHome'
+                //window.location.href = '/UserHome'
             })
             .catch(error => {
                 console.log(error)
