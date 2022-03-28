@@ -8,9 +8,11 @@ const UserSchema = new Schema({
     email: { type: String, required: true },
     username: { type: String, minLength: 1 },
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-    friends: [],
-    friend_requests: [],
-    facebook_id: { type: String, required: false }
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friend_requests: [{ type: Schema.Types.ObjectId, ref: 'Friend' }],
+    birth_date: { type: Date },
+    bio: { type: String, maxlength: 550 },
+    profile_pic: { type: String }
 });
 
 // Virtual for User's full name

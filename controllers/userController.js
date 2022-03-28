@@ -6,7 +6,7 @@ const User = require("../models/user");
 const { body, validationResult } = require("express-validator");
 const async = require('async');
 const Post = require('../models/post');
-const Profile = require("../models/profile");
+const Friend = require("../models/friend");
 
 exports.get_users = function (req, res) {
     User.find({})
@@ -18,6 +18,45 @@ exports.get_users = function (req, res) {
             });
         });
 };
+
+// exports.get_users = function (req, res, next) {
+//     User.findById(req.params.id).then((user) => {
+//         console.log(user)
+//         Friend.find({ $or: [{ from: user._id }, { to: user._id }] }).then((fr) => {
+//             User.find(
+//                 {
+//                     _id: { $nin: user.friends, $ne: user._id },
+//                     friend_requests: { $nin: fr },
+         
+//                 },
+//                 'firstname lastname profile_pic',
+//             )
+                
+//                 .populate({
+//                     path: 'friend_requests',
+//                     populate: {
+//                         path: 'from',
+//                         model: 'User',
+//                         select: 'firstname lastname profile_pic',
+//                     },
+//                 })
+//                 .populate({
+//                     path: 'friend_requests',
+//                     populate: {
+//                         path: 'to',
+//                         model: 'User',
+//                         select: 'firstname lastname profile_pic',
+//                     },
+//                 })
+//                 .then((user_list) => {
+//                     res.status(200).json(user_list);
+//                 })
+//                 .catch((error) => {
+//                     next(error);
+//                 });
+//         });
+//     });
+// };
     
 exports.get_one_user = function (req, res, next) {
 
@@ -27,7 +66,7 @@ exports.get_one_user = function (req, res, next) {
                 .exec(callback)
         },
         users_posts: function (callback) {
-            Post.find({ 'author': req.params.id }, 'title post')
+            Post.find({ 'user': req.params.id }, 'user title post')
                 .exec(callback)
         },
     }, function (err, results) {
@@ -65,7 +104,10 @@ exports.user_signup = [
                 username: req.body.username,
                 posts: [],
                 friends: [],
-                friend_requests: []
+                friend_requests: [],
+                birth_date: '',
+                bio: '',
+                profile_pic: '',
             })
                 .save((err, user) => {
                     if (err) { return next(err); }
@@ -83,7 +125,7 @@ exports.user_login = [
     
     (req, res) => {
         const errors = validationResult(req);
-        if (!errors.isEmpty()) return res.json({ errors: errors.array() });
+        if (!errors.isEmpty()) return res.status(400).json({ error: errors.array() });
         passport.authenticate('local', { session: false }, (err, user) => {
             if (err || !user) {
                 return res.status(401).json({ message: 'Incorrect Email or Password!', user });

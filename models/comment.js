@@ -7,7 +7,7 @@ const CommentSchema = new Schema({
     comment: { type: String, required: true, maxLength: 300 },
     date: { type: Date, default: Date.now },
     post: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    likes: []
 });
 
 CommentSchema

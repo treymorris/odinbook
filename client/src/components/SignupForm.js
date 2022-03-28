@@ -50,6 +50,7 @@ function SignupForm() {
                             placeholder="First Name"
                             className="form-control form-control-sm"
                             id="firstname"
+                            required
                             onChange={(e) => setFirstname(e.target.value)}
                         />
                     </div>
@@ -59,6 +60,7 @@ function SignupForm() {
                             placeholder="Last Name"
                             className="form-control form-control-sm"
                             id="lastname"
+                            required
                             onChange={(e) => setLastname(e.target.value)}
                         />
                     </div>
@@ -68,6 +70,7 @@ function SignupForm() {
                             placeholder="Email"
                             className="form-control form-control-sm"
                             id="email"
+                            required
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
@@ -77,6 +80,7 @@ function SignupForm() {
                             placeholder="Username"
                             className="form-control form-control-sm"
                             id="username"
+                            required
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
@@ -86,6 +90,7 @@ function SignupForm() {
                             placeholder="Password"
                             className="form-control form-control-sm"
                             id="password"
+                            required
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>

@@ -16,7 +16,7 @@ function Post() {
     };
 
     const [posts, setPosts] = useState([]);
-
+    
     return (
         
         <div className='container-fluid'>
@@ -26,7 +26,8 @@ function Post() {
                 <img src="" className="card-img-top" alt="" />
                 <div className="card-body">
                     <h5 className="card-title text-dark">{post.title}</h5>
-                    <p className="card-text">{post.post}</p>
+                        <p className="card-text">{post.post}</p>
+                        <p>{post.user.username}</p>
                     <p>{DateTime.fromISO(post.date).toLocaleString(DateTime.DATETIME_MED)}</p>
                     <a href="www" className="link-warning">Edit</a>
                 </div>

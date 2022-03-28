@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -8,6 +8,8 @@ function PostForm() {
   const [post, setPost] = useState('');
   const [title, setTitle] = useState('');
   const userid = localStorage.getItem('userid')
+  let navigate = useNavigate();
+
     console.log(userid);
 
   const handleSubmit = (e) => {
@@ -31,9 +33,11 @@ function PostForm() {
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data);
+        navigate('/UserHome')
       })
       .catch((error) => {
         console.log('Error:', error);
+        navigate('/')
       });
   };
 

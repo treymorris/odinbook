@@ -8,6 +8,7 @@ const async = require('async');
 exports.get_posts = function (req, res) {
     Post.find({})
         .sort([['date', 'descending']])
+        .populate('user')
         .exec(function (err, list_posts) {
             if (err) {return next(err)};
             res.status(200).json({

@@ -26,12 +26,13 @@ function Login() {
         })
             .then(response => response.json())//catch token here and save to local storage
             .then(data => {
-                console.log(data)
+                //console.log(data)
                 if (data.token) {
                     localStorage.setItem('token', data.token)
                     localStorage.setItem('userid', data.userid)
-                    navigate('/UserHome')
-                } else if (data.errors) {
+                    navigate('/UserHome', {user:{id: data.userid}})
+                } else if (data.error) {
+                    console.log(data.error)
                     navigate('/')
                 }
                })
@@ -63,6 +64,7 @@ function Login() {
                             type="username"
                             className="form-control form-control-sm"
                             id="username"
+                            required
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
@@ -72,6 +74,7 @@ function Login() {
                             type="password"
                             className="form-control form-control-sm"
                             id="password"
+                            required
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
