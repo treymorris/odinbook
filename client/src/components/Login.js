@@ -13,8 +13,7 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-
-        fetch('/api/users/login', {
+            fetch('/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

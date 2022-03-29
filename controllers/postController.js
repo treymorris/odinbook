@@ -59,8 +59,7 @@ exports.create_post = [
             user: req.body._id,
             title: req.body.title,
             post: req.body.post,
-            comments: [],
-            likes: []
+            
         })
             .save(function (err) {
                 if (err) { return next(err); }

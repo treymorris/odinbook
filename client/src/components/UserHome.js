@@ -6,6 +6,23 @@ import { Link } from 'react-router-dom';
 
 function Home() {
 
+    const userid = localStorage.getItem('userid')
+    console.log(userid)
+    
+    const [user, setUser] = useState({});
+    
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
+    const fetchUser = async () => {
+        const data = await fetch(`/api/users/${userid}`)
+        const user = await data.json();
+
+        setUser(user.user)
+        console.log(user.user)
+    }
+
     useEffect(() => {
         fetchItems();
     }, []);
@@ -16,10 +33,10 @@ function Home() {
         
         setUsers(users.user_list)
     }
-    const userid = localStorage.getItem('userid')
-    console.log(userid)
+    
     const [users, setUsers] = useState([]);
     const filtered = users.filter(user => user._id !== userid)
+
     return (
         <main>
             <header>
@@ -28,7 +45,9 @@ function Home() {
             <section>
                 <div className="container-fluid">
                     <h1 className='text-light text-center'>OdinBook</h1>
-                    <p className='text-light mb-5 text-center'>Welcome to OdinBook!</p>
+                    <p className='text-light mb-5 text-center'>Welcome to OdinBook {user.firstname} !</p>
+                    <p className='text-light'>{user.username}</p>
+                    
                 </div>
             </section>
             <div className='d-flex'>

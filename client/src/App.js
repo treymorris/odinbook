@@ -8,13 +8,9 @@ import ProfileForm from './components/ProfileForm';
 import Footer from './components/Footer';
 import UserProfile from './components/UserProfile'
 import PostForm from './components/PostForm'
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
 function App() {
-
-  
   return (
     <div>
       <Router>
@@ -30,7 +26,6 @@ function App() {
       <footer>
         <Footer />
       </footer>
-      
     </div>
   );
 }

@@ -60,6 +60,14 @@ exports.get_users = function (req, res) {
     
 exports.get_one_user = function (req, res, next) {
 
+    // User.findById(req.params.id)
+    //     .populate('posts')
+    //     .exec(function (err, data) {
+    //         if (err) { return next(err) };
+    //         res.status(200).json({
+    //             data
+    //         })
+    // })
     async.parallel({
         user: function (callback) {
             User.findById(req.params.id)
@@ -102,12 +110,7 @@ exports.user_signup = [
                 email: req.body.email,
                 password: hashedPass,
                 username: req.body.username,
-                posts: [],
-                friends: [],
-                friend_requests: [],
-                birth_date: '',
-                bio: '',
-                profile_pic: '',
+                
             })
                 .save((err, user) => {
                     if (err) { return next(err); }
