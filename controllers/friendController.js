@@ -16,8 +16,8 @@ exports.friend_request = [
         if (!errors.isEmpty()) return res.json({ errors: errors.array() });
 
         const request = new Friend({
-            from: req.body.currentUserId,
-            to: req.body.userid,
+            from: req.body.from,
+            to: req.body.to,
             status: 'Pending'
         })
             .save(function (err) {

@@ -44,6 +44,7 @@ exports.get_one_post = function (req, res, next) {
             comments: results.comments
         });
     });
+    
 };
 
 exports.create_post = [

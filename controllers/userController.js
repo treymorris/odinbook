@@ -74,7 +74,8 @@ exports.get_one_user = function (req, res, next) {
                 .exec(callback)
         },
         users_posts: function (callback) {
-            Post.find({ 'user': req.params.id }, 'user title post')
+            Post.find({ 'user': req.params.id }, 'user title post date')
+                .populate('user')
                 .exec(callback)
         },
     }, function (err, results) {

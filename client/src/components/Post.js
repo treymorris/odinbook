@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 const { DateTime } = require('luxon');
 
-function Post() {
+function Post(props) {
 
     useEffect(() => {
         fetchItems();
     }, []);
 
-
+    console.log(props.usersPosts)
     const fetchItems = async () => {
-        const data = await fetch('api/posts');
+        const data = await fetch(`api/posts`);
         const posts = await data.json();
 
         setPosts(posts.post_list)
@@ -21,7 +21,7 @@ function Post() {
         
         <div className='container-fluid'>
             <h5 className='text-light'>Posts</h5>
-            {posts.map(post => (
+            {props.usersPosts.map(post => (
             <div className="card w-75 list-group-flush" key={post._id}>
                 <img src="" className="card-img-top" alt="" />
                 <div className="card-body">
