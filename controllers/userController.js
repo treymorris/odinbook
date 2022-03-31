@@ -18,56 +18,9 @@ exports.get_users = function (req, res) {
             });
         });
 };
-
-// exports.get_users = function (req, res, next) {
-//     User.findById(req.params.id).then((user) => {
-//         console.log(user)
-//         Friend.find({ $or: [{ from: user._id }, { to: user._id }] }).then((fr) => {
-//             User.find(
-//                 {
-//                     _id: { $nin: user.friends, $ne: user._id },
-//                     friend_requests: { $nin: fr },
-         
-//                 },
-//                 'firstname lastname profile_pic',
-//             )
-                
-//                 .populate({
-//                     path: 'friend_requests',
-//                     populate: {
-//                         path: 'from',
-//                         model: 'User',
-//                         select: 'firstname lastname profile_pic',
-//                     },
-//                 })
-//                 .populate({
-//                     path: 'friend_requests',
-//                     populate: {
-//                         path: 'to',
-//                         model: 'User',
-//                         select: 'firstname lastname profile_pic',
-//                     },
-//                 })
-//                 .then((user_list) => {
-//                     res.status(200).json(user_list);
-//                 })
-//                 .catch((error) => {
-//                     next(error);
-//                 });
-//         });
-//     });
-// };
     
 exports.get_one_user = function (req, res, next) {
 
-    // User.findById(req.params.id)
-    //     .populate('posts')
-    //     .exec(function (err, data) {
-    //         if (err) { return next(err) };
-    //         res.status(200).json({
-    //             data
-    //         })
-    // })
     async.parallel({
         user: function (callback) {
             User.findById(req.params.id)
@@ -203,12 +156,3 @@ exports.delete_user = function (req, res, next) {
         res.json({message: 'User Deleted!'})
     })
 }
-
-// exports.users_posts = function (req, res, next) {
-    
-//     Post
-//         .find({ 'user': req.body._id })
-//         .exec(function (err, posts) {
-//             if (err) return handleError(err);
-//         });
-// };

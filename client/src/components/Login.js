@@ -67,7 +67,7 @@ function Login() {
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
-                    <div className="mb-3 w-50 mx-auto">
+                    <div className="mb-4 w-50 mx-auto">
                         <input
                             placeholder='Password'
                             type="password"
@@ -98,7 +98,7 @@ function Login() {
                         >Log In with Facebook
                         </button>
                         <button
-                            className="btn btn-primary"
+                            className="btn btn-primary mb-5"
                             type="button"
                             onClick={handleGoogle}
                         >Log In with Google

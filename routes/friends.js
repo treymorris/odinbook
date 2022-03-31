@@ -7,7 +7,7 @@ const verifyToken = require('../config/verifyToken');
 router.post('/request', friend_controller.friend_request);
 
 // POST friend accept
-router.post('/accept', friend_controller.friend_accept);
+router.put('/accept', friend_controller.friend_accept);
 
 //POST friend declined
 router.post('/declined', friend_controller.friend_declined);

@@ -6,7 +6,7 @@ const handleSubmit = () => {
 
 function Footer() {
     return (
-      <div className="navbar fixed-bottom bg-dark d-flex justify-content-center">
+      <div className="navbar  bg-dark d-flex justify-content-center">
             <button
                 className="btn nav-link btn-sm"
                 type="button"

@@ -31,25 +31,22 @@ exports.friend_request = [
 ]
     
 exports.friend_accept = function (req, res) {
-    Friend.find({'status': 'Accepted'})
-        .populate('from to')
-        .exec(function (err, data) {
-            if (err) { return next(err) };
-            res.status(200).json({
-                data
-            })
-    })
+    Friend.findByIdAndUpdate(req.body.id, { status: 'Accepted' }, function (err, update) {
+        if (err) { return next(err) };
+        res.json({
+            message: 'Accepted!'
+        });
+    });
+        
 };
 
 exports.friend_declined = function (req, res) {
-    Friend.find({'status': 'Declined'})
-        .populate('from to')
-        .exec(function (err, data) {
-            if (err) { return next(err) };
-            res.status(200).json({
-                data
-            })
-    })
+    Friend.findByIdAndUpdate(req.body.id, { status: 'Declined' }, function (err, update) {
+        if (err) { return next(err) };
+        res.json({
+            message: 'Declined!'
+        });
+    });
 };
 
 exports.friend_pending = function (req, res) {

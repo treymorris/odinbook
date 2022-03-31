@@ -1,7 +1,8 @@
 import '../App.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import Navbar from "./Navbar"
+const { DateTime } = require('luxon');
 
 function UserIndex() {
 
@@ -41,11 +42,15 @@ function UserIndex() {
 
   return (
       
-      <div>
-      <h1 className='text-light text-center'>{user.username}</h1>
+    <div>
+      <Navbar />
+      <h1 className='text-light text-center'>User Name: {user.username}</h1>
+      <img src={user.profile_pic} alt=''></img>
       <p className='text-light'>{user.firstname} {user.lastname}</p>
       <p className='text-light'>{user.email}</p>
-      <button className='btn nav-link' onClick={handleClick}>Click to Send Friend Request</button>
+      <p className='text-light'>{user.bio}</p>
+      <p className='text-light'>Birthday:{DateTime.fromISO(user.birth_date).toLocaleString(DateTime.DATE_MED)}</p>
+      <button className='btn nav-link ps-0' onClick={handleClick}>Click to Send Friend Request</button>
       </div>
     
   );
