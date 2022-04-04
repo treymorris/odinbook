@@ -59,16 +59,15 @@ exports.create_post = [
         const post = new Post({
             user: req.body._id,
             title: req.body.title,
-            post: req.body.post,
-            
+            post: req.body.post
         })
             .save(function (err) {
                 if (err) { return next(err); }
                 res.json({
-                    message: 'Post Created!',
+                    message: 'Post Created!'
                 })
         })
-    },
+    }
 ]
 
 exports.edit_post = [
@@ -92,13 +91,13 @@ exports.edit_post = [
 ]
 
 exports.like_post = function (req, res, next) {
-    Post.findByIdAndUpdate(req.params.id, post, {}, function (err, thepost) {
+    Post.findByIdAndUpdate(req.body.id, {}, function (err, thepost) {
         if (err) { return next(err); }
-        post.likes.push('like')
-        post.save()
+        thepost.likes.push('like')
+        thepost.save()
         res.json({
             message: 'Post liked!',
-            post: thepost
+            
         });
     })
 };

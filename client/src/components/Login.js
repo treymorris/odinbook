@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import '../App.css';
 
 function Login() {
 
@@ -54,10 +54,10 @@ function Login() {
 
     return (
         <div className='container'>
-            <h1 className="text-light text-center mt-5 mb-5">OdinBook</h1>
+            <h1 className="text-light text-center mb-5 top-buffer">OdinBook</h1>
             <form onSubmit={handleSubmit}>
                 <div >
-                     <div className="mb-3 w-50 mx-auto">
+                     <div className="mb-2 w-50 mx-auto">
                         <input
                             placeholder='Username'
                             type="username"
@@ -67,7 +67,7 @@ function Login() {
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
-                    <div className="mb-4 w-50 mx-auto">
+                    <div className="mb-2 w-50 mx-auto">
                         <input
                             placeholder='Password'
                             type="password"

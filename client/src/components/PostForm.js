@@ -10,14 +10,10 @@ function PostForm() {
   const userid = localStorage.getItem('userid')
   let navigate = useNavigate();
 
-    console.log(userid);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     
-      
-
-    fetch('/api/posts/create', {
+      fetch('/api/posts/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,9 +37,7 @@ function PostForm() {
       });
   };
 
-  
-  
-    return (
+  return (
       <div>
         <h1 className="text-light  text-center mb-5 mt-5">Create a new Post!</h1>
           <form onSubmit={handleSubmit}>
@@ -63,7 +57,8 @@ function PostForm() {
               id="postText"
               placeholder='Post Content'
               rows="3"
-              onChange={(e) => setPost(e.target.value)}>
+              onChange={(e) => setPost(e.target.value)}
+            >
             </textarea>
             </div>
             <div>

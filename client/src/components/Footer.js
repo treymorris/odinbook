@@ -1,7 +1,7 @@
 import '../App.css';
 
 const handleSubmit = () => {
-    window.location.href = '/'
+    window.location.href = '/userHome'
 }
 
 function Footer() {

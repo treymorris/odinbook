@@ -8,6 +8,7 @@ import ProfileForm from './components/ProfileForm';
 import Footer from './components/Footer';
 import UserProfile from './components/UserProfile'
 import PostForm from './components/PostForm'
+import CommentForm from './components/CommentForm'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path='/updateProfile' element={<ProfileForm />} />
           <Route path='/:id' element={<UserProfile />} />
           <Route path='/create' element={<PostForm />} />
+          <Route path='/CommentForm' element={<CommentForm/>} />
         </Routes>
       </Router>
       <footer>

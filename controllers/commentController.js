@@ -17,11 +17,26 @@ exports.get_one_comment = function (req, res) {
     });
 };
 
-exports.create_comment = function (req, res) {
-    res.json({
-        message: 'not implemented: create comment'
-    });
-};
+exports.create_comment = [
+    body('comment', 'Please enter a comment.').trim().isLength({ min: 1 }).escape(),
+        
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.json({ errors: errors.array() });
+
+        const comment = new Comment({
+            user: req.body.user,
+            post: req.body.post,
+            comment: req.body.comment
+        })
+            .save(function (err) {
+                if (err) { return next(err); }
+                res.json({
+                    message: 'Comment Created!'
+                })
+        })
+    }
+]
 
 exports.edit_comment = function (req, res) {
     res.json({

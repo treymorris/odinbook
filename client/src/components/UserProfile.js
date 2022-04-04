@@ -40,17 +40,24 @@ function UserIndex() {
     })
   }
 
+  const userImage = user.profile_pic ? user.profile_pic : 'https://via.placeholder.com/150'
+
   return (
       
     <div>
       <Navbar />
-      <h1 className='text-light text-center'>User Name: {user.username}</h1>
-      <img src={user.profile_pic} alt=''></img>
-      <p className='text-light'>{user.firstname} {user.lastname}</p>
-      <p className='text-light'>{user.email}</p>
-      <p className='text-light'>{user.bio}</p>
-      <p className='text-light'>Birthday:{DateTime.fromISO(user.birth_date).toLocaleString(DateTime.DATE_MED)}</p>
-      <button className='btn nav-link ps-0' onClick={handleClick}>Click to Send Friend Request</button>
+      <h1 className='text-light text-center mt-5 mb-5'>User Profile: {user.username}</h1>
+      <div className='d-flex'>
+      <img src={userImage} alt=''></img>
+        <div >
+          <p className='text-light mt-1 p-1 mb-1 ms-5'>{user.firstname} {user.lastname}</p>
+          <p className='text-light p-1 mb-1 ms-5'>{user.email}</p>
+          <p className='text-light p-1 mb-1 ms-5'>Birthday: {DateTime.fromISO(user.birth_date).toLocaleString(DateTime.DATE_MED)}</p>
+          <p className='text-light p-1 mb-1 ms-5'>Hobbies: {user.hobbies}</p>
+          <p className='text-light p-1 mb-1 ms-5'>{user.bio}</p>
+        </div>
+      </div>
+      <button className='btn nav-link ps-0 mt-3 mb-5' onClick={handleClick}>Send Friend Request</button>
       </div>
     
   );

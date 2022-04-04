@@ -19,6 +19,6 @@ router.get('/:id', post_controller.get_one_post);
 router.get('/', post_controller.get_posts);
 
 // POST like post
-router.post(':id/like', post_controller.like_post);
+router.put('/like', post_controller.like_post);
 
 module.exports = router;

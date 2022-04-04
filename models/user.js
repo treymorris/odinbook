@@ -12,7 +12,8 @@ const UserSchema = new Schema({
     friend_requests: [{ type: Schema.Types.ObjectId, ref: 'Friend' }],
     birth_date: { type: Date },
     bio: { type: String, maxlength: 550 },
-    profile_pic: { type: String }
+    profile_pic: { type: String },
+    hobbies: { type: String, maxlength: 550}
 });
 
 // Virtual for User's full name
