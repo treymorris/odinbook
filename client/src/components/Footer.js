@@ -6,9 +6,9 @@ const handleSubmit = () => {
 
 function Footer() {
     return (
-      <div className="navbar  bg-dark d-flex justify-content-center">
+      <div>
             <button
-                className="btn nav-link btn-sm"
+                className="btn bg-transparent nav-link mx-auto "
                 type="button"
                 onClick={handleSubmit}
                 >OB

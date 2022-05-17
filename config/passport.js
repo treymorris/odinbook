@@ -6,14 +6,21 @@ const extractJWT = require("passport-jwt").ExtractJwt;
 const User = require("../models/user");
 
 // passport setup
-passport.use(new LocalStrategy(
-    (username, password, done) => {
+passport.use(
+  new LocalStrategy((username, password, done) => {
     User.findOne({ username: username }, (err, user) => {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false, "Incorrect Username!"); }
-        bcrypt.compare(password, user.password, (err, res) => {
-        if (res) {return done(null, user);}
-        else {return done(null, false, { message: "Incorrect Password!" })};
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false, "Incorrect Username!");
+      }
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Incorrect Password!" });
+        }
       });
     });
   })
