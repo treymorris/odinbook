@@ -3,6 +3,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
+const Comment = require("../models/comment")
 const { body, validationResult } = require("express-validator");
 const async = require("async");
 const Post = require("../models/post");
@@ -32,6 +33,9 @@ exports.get_one_user = function (req, res, next) {
           .populate("user")
           .exec(callback);
       },
+      post_comments: function (callback) {
+        Comment.find({ user: req.params.id }).exec(callback);
+      },
     },
     function (err, results) {
       if (err) {
@@ -46,6 +50,7 @@ exports.get_one_user = function (req, res, next) {
         message: "get one user",
         user: results.user,
         users_posts: results.users_posts,
+        comments: results.post_comments
       });
     }
   );

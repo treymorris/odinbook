@@ -1,10 +1,8 @@
 import "./App.css";
-
 import UserHome from "./components/UserHome";
 import SignupForm from "./components/SignupForm";
 import Login from "./components/Login";
 import ProfileForm from "./components/ProfileForm";
-import Footer from "./components/Footer";
 import UserProfile from "./components/UserProfile";
 import PostForm from "./components/PostForm";
 import CommentForm from "./components/CommentForm";

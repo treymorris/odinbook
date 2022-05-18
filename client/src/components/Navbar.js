@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
   const logout = () => {
@@ -6,20 +8,20 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar bg-secondary border-bottom border-primary border-1 mb-3">
       <div className="container-fluid">
-          <NavLink className="p-3 nav-link" to="/userHome">
-            Odinbook
-          </NavLink>
+        <NavLink className="p-3 nav-link" to="/userHome">
+          Odinbook
+        </NavLink>
         <div className="nav ">
-          <NavLink className="p-3 nav-link" to="/userIndex">
+          {/* <NavLink className="p-3 nav-link" to="/userIndex">
             Find User
-          </NavLink>
+          </NavLink> */}
           {/* <NavLink className="p-3 nav-link" to="/create">
             Create Post
           </NavLink> */}
           <NavLink className="p-3 nav-link" to="/" onClick={logout}>
-            Logout
+            <FontAwesomeIcon icon={faCircleUser} size="2x" />
           </NavLink>
         </div>
       </div>

@@ -1,12 +1,11 @@
-import "../App.css";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CommentForm(props) {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState([]);
   const userid = localStorage.getItem("userid");
 
-  //console.log(props.postid)
   let navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -16,7 +15,6 @@ function CommentForm(props) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        //add authorization header with 'bearer' + token here
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
@@ -50,7 +48,7 @@ function CommentForm(props) {
         <div>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary position-relative top-0 start-50 translate-middle"
             onClick={handleSubmit}
           >
             Submit

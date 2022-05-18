@@ -1,9 +1,11 @@
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAddressBook, faGear } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "./Navbar";
 import Post from "./Post";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PostForm from "./PostForm";
-
 
 function Home() {
   const handleAccept = (friend) => {
@@ -34,7 +36,7 @@ function Home() {
 
   const userid = localStorage.getItem("userid");
   const [user, setUser] = useState({});
-  const [usersPosts, setUsersPosts] = useState([]);
+  //const [usersPosts, setUsersPosts] = useState([]);
   const userImage = user.profile_pic
     ? user.profile_pic
     : "https://via.placeholder.com/150";
@@ -47,10 +49,13 @@ function Home() {
     const data = await fetch(`/api/users/${userid}`);
     const user = await data.json();
     setUser(user.user);
-    setUsersPosts(user.users_posts);
+    //console.log(user)
+    //setUsersPosts(user.users_posts);
+    //setComments(user.comments);
   };
 
   const [users, setUsers] = useState([]);
+  //const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetchItems();
@@ -84,7 +89,7 @@ function Home() {
     const data = await fetch("api/friends/accepted");
     const accepted = await data.json();
     setAccepted(accepted.data);
-    console.log(accepted.data);
+    //console.log(accepted.data);
   };
 
   const filtered = users.filter((user) => user._id !== userid); //list of users need to fix to exclude friends
@@ -97,23 +102,31 @@ function Home() {
     <div className="bg-dark">
       <Navbar />
       <div className="row">
-        <div className="homeProfile col">
-          <div className="d-flex align-items-center bg-secondary border border-primary">
+        <div className="homeProfile col-3">
+          <div className="d-flex align-items-center bg-secondary border border-primary ms-4 w-85">
             <img
               src={userImage}
               alt="user profile"
               className="shrink p-1 "
             ></img>
-            <p className="text-light ms-3">{user.username}</p>
+            <p className="text-light ms-2 mb-0">{user.username}</p>
           </div>
-          <p className="text-light bg-secondary m-0 p-4 border border-primary">
-            friends
-          </p>
-          <p className="text-light bg-secondary m-0 p-4 border border-primary">
-            account
-          </p>
+          <div className="d-flex align-items-center bg-secondary border border-primary ms-4 w-85 text-light">
+            <div className="ms-3">
+              <FontAwesomeIcon icon={faAddressBook} size="2x" />
+            </div>
+            <p className="text-light bg-secondary m-0 p-3">Friends</p>
+          </div>
+          <div className="d-flex align-items-center bg-secondary border border-primary ms-4 w-85 text-light">
+            <div className="ms-3">
+              <FontAwesomeIcon icon={faGear} size="2x" />
+            </div>
+            <p className="text-light bg-secondary m-0 p-3">
+              Account
+            </p>
+          </div>
         </div>
-        <div className="postFormHome container w-50 col-6">
+        <div className="postFormHome container w-50 ms-0">
           <PostForm />
         </div>
         <div className="friendsHome col">
@@ -129,7 +142,7 @@ function Home() {
             ))}
           </div>
           <div id="friend-sidebar" className="container-fluid">
-            <h5 className="text-light p-2">Friend Requests</h5>
+            <h5 className="text-light p-2 mt-2">Friend Requests</h5>
             {filteredFriends.map((friend) => (
               <div key={friend._id} className="border border-primary">
                 <Link
@@ -162,7 +175,7 @@ function Home() {
           {filtered.map((filter) => (
             <Link
               key={filter._id}
-              className="p-3 nav-link text-light bg-secondary w-100 border border-primary"
+              className="p-3 ms-4 nav-link text-light bg-secondary w-85 border border-primary"
               userid={userid}
               to={`/${filter._id}`}
             >
@@ -171,7 +184,7 @@ function Home() {
           ))}
         </div>
         <div className="postsHome col-6">
-          <Post userid={userid} usersPosts={usersPosts} />
+          <Post />
         </div>
       </div>
     </div>

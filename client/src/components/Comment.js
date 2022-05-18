@@ -1,9 +1,24 @@
-import "../App.css";
 
-function Comment() {
+const { DateTime } = require("luxon");
+
+
+function Comment({ comments, postid }) {
+
+  let filtered = comments.filter((comment)=> comment.post === postid)
+
   return (
     <div>
-      <h6 className="mt-1">Comments:</h6>
+      
+      {filtered.map((comment) => (
+        <div key={comment._id}>
+          <p>{comment.comment}</p>
+          <p>
+            {DateTime.fromISO(comment.date).toLocaleString(
+              DateTime.DATETIME_MED
+            )}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
