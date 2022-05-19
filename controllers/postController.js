@@ -69,7 +69,7 @@ exports.create_post = [
         return next(err);
       }
       res.json({
-        message: "Post Created!",
+        message: "Post Created!"
       });
     });
   },

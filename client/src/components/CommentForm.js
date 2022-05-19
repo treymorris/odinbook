@@ -1,10 +1,8 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CommentForm(props) {
-  const [comment, setComment] = useState([]);
-  const userid = localStorage.getItem("userid");
+function CommentForm({ postid, userid }) {
+  const [text, setText] = useState([]);
 
   let navigate = useNavigate();
 
@@ -18,20 +16,21 @@ function CommentForm(props) {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
-        comment: comment,
+        comment: text,
         user: userid,
-        post: props.postid,
+        post: postid,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("Success on fetch:", data);
-        navigate("/UserHome");
+        navigate("/userHome");
       })
       .catch((error) => {
         console.log("Error:", error);
       });
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -42,7 +41,7 @@ function CommentForm(props) {
             id="commentText"
             placeholder="Add Comment Here..."
             rows="3"
-            onChange={(e) => setComment(e.target.value)}
+            onChange={(e) => setText(e.target.value)}
           ></textarea>
         </div>
         <div>

@@ -1,48 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 const { DateTime } = require("luxon");
 
-function Post() {
-  const userid = localStorage.getItem("userid");
-  const [user, setUser] = useState({});
-  const [usersPosts, setUsersPosts] = useState([]);
-  const [comments, setComments] = useState([]);
-  
-
-  useEffect(() => {
-    fetchUser();
-  },[]);
-
-  const fetchUser = async () => {
-    const data = await fetch(`/api/users/${userid}`);
-    const user = await data.json();
-    setUser(user.user);
-    setUsersPosts(user.users_posts);
-    setComments(user.comments);
-    
-  };
-  
-  function handleLike(postId) {
-    fetch("/api/posts/like", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        id: postId,
-      }),
-    })
-   
-  }
-
-  const userImage = user.profile_pic
-    ? user.profile_pic
-    : "https://via.placeholder.com/150";
-
+function Post({ usersPosts, userImage, comments, handleLike, userid }) {
   return (
     <div>
       {usersPosts.map((post) => (
@@ -73,7 +35,7 @@ function Post() {
             </button>
             <h5 className="mt-3">Comments:</h5>
             <Comment comments={comments} postid={post._id} />
-            <CommentForm postid={post._id} />
+            <CommentForm postid={post._id} userid={userid} />
           </div>
         </div>
       ))}

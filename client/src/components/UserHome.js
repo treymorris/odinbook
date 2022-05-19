@@ -1,13 +1,23 @@
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressBook, faGear } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "./Navbar";
 import Post from "./Post";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PostForm from "./PostForm";
 
-function Home() {
+function Home({
+  userImage,
+  user,
+  filteredFriends,
+  friendsAccepted,
+  filtered,
+  userid,
+  usersPosts,
+  fetchUser,
+  comments,
+  handleLike,
+}) {
+  //TODO  make all fetch calls async
   const handleAccept = (friend) => {
     fetch("/api/friends/accept", {
       method: "PUT",
@@ -34,69 +44,6 @@ function Home() {
     });
   };
 
-  const userid = localStorage.getItem("userid");
-  const [user, setUser] = useState({});
-  //const [usersPosts, setUsersPosts] = useState([]);
-  const userImage = user.profile_pic
-    ? user.profile_pic
-    : "https://via.placeholder.com/150";
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    const data = await fetch(`/api/users/${userid}`);
-    const user = await data.json();
-    setUser(user.user);
-    console.log(user)
-    //setUsersPosts(user.users_posts);
-    //setComments(user.comments);
-  };
-
-  const [users, setUsers] = useState([]);
-  //const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  const fetchItems = async () => {
-    const data = await fetch("api/users");
-    const users = await data.json();
-    setUsers(users.user_list);
-  };
-
-  const [friends, setFriends] = useState([]);
-
-  useEffect(() => {
-    fetchFriends();
-  }, []);
-
-  const fetchFriends = async () => {
-    const data = await fetch("api/friends/pending");
-    const friends = await data.json();
-    setFriends(friends.data);
-  };
-
-  const [accepted, setAccepted] = useState([]);
-
-  useEffect(() => {
-    fetchAccepted();
-  }, []);
-
-  const fetchAccepted = async () => {
-    const data = await fetch("api/friends/accepted");
-    const accepted = await data.json();
-    setAccepted(accepted.data);
-    //console.log(accepted.data);
-  };
-
-  const filtered = users.filter((user) => user._id !== userid); //list of users need to fix to exclude friends
-  const filteredFriends = friends.filter((friend) => friend.to._id === userid); //list of users that have sent friend requests
-  console.log(filteredFriends)
-  const friendsAccepted = accepted.filter((accepted) => accepted.to._id === userid);
-
   return (
     <div className="bg-dark">
       <Navbar />
@@ -120,13 +67,15 @@ function Home() {
             <div className="ms-3">
               <FontAwesomeIcon icon={faGear} size="2x" />
             </div>
-            <p className="text-light bg-secondary m-0 p-3">
-              Account
-            </p>
+            <p className="text-light bg-secondary m-0 p-3">Account</p>
           </div>
         </div>
         <div className="postFormHome container w-50 ms-0">
-          <PostForm />
+          <PostForm
+            userid={userid}
+            usersPosts={usersPosts}
+            fetchUser={fetchUser}
+          />
         </div>
         <div className="friendsHome col">
           <div className="container-fluid">
@@ -183,7 +132,13 @@ function Home() {
           ))}
         </div>
         <div className="postsHome col-6">
-          <Post />
+          <Post
+            usersPosts={usersPosts}
+            userImage={userImage}
+            comments={comments}
+            handleLike={handleLike}
+            userid={userid}
+          />
         </div>
       </div>
     </div>

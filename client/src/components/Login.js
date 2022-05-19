@@ -27,7 +27,7 @@ function Login() {
         if (data.token) {
           localStorage.setItem("token", data.token);
           localStorage.setItem("userid", data.userid);
-          navigate("/UserHome", { user: { id: data.userid } });
+          navigate("/userHome", { user: { id: data.userid } });
         } else if (data.error) {
           console.log(data.error);
           navigate("/");

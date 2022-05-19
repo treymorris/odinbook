@@ -14,12 +14,6 @@ function Navbar() {
           Odinbook
         </NavLink>
         <div className="nav ">
-          {/* <NavLink className="p-3 nav-link" to="/userIndex">
-            Find User
-          </NavLink> */}
-          {/* <NavLink className="p-3 nav-link" to="/create">
-            Create Post
-          </NavLink> */}
           <NavLink className="p-3 nav-link" to="/" onClick={logout}>
             <FontAwesomeIcon icon={faCircleUser} size="2x" />
           </NavLink>

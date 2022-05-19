@@ -1,59 +1,61 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-function PostForm() {
-  const [post, setPost] = useState("");
-  const [title, setTitle] = useState("");
-  const userid = localStorage.getItem("userid");
-  let navigate = useNavigate();
+function PostForm({ userid, fetchUser }) {
+  const [post, setPost] = useState({
+    text: "",
+    title: "",
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleChange = (e) => {
+    console.log(post);
+    const { name, value } = e.target;
+    setPost((prevState) => {
+      return { ...prevState, [name]: value };
+    });
+  };
 
-    fetch("/api/posts/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //add authorization header with 'bearer' + token here
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        title,
-        post,
-        _id: userid,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.log("Error:", error);
-        navigate("/");
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("/api/posts/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          title: post.title,
+          post: post.text,
+          _id: userid,
+        }),
       });
+      const data = await response.json();
+      console.log(data);
+      fetchUser()
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div>
-      {/* <h1 className="text-light  text-center mb-5 mt-5">Create a new Post!</h1> */}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3 pt-3">
+      <form >
+        <div className="mb-3 pt-2">
           <input
             type="text"
+            name="title"
             className="form-control"
             id="postTitle"
             placeholder="Title"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-3">
           <textarea
-            name="content"
+            name="text"
             className="form-control"
             id="postText"
             placeholder="Whaddya say today?"
-            // rows="3"
-            onChange={(e) => setPost(e.target.value)}
+            onChange={handleChange}
           ></textarea>
         </div>
         <div>
