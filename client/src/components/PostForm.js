@@ -26,7 +26,6 @@ function PostForm() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
-        navigate("/UserHome");
       })
       .catch((error) => {
         console.log("Error:", error);

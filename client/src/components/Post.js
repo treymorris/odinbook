@@ -10,10 +10,11 @@ function Post() {
   const [user, setUser] = useState({});
   const [usersPosts, setUsersPosts] = useState([]);
   const [comments, setComments] = useState([]);
+  
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  },[]);
 
   const fetchUser = async () => {
     const data = await fetch(`/api/users/${userid}`);
@@ -21,9 +22,10 @@ function Post() {
     setUser(user.user);
     setUsersPosts(user.users_posts);
     setComments(user.comments);
+    
   };
-  console.log(usersPosts);
-  function handleLike(like) {
+  
+  function handleLike(postId) {
     fetch("/api/posts/like", {
       method: "PUT",
       headers: {
@@ -31,9 +33,10 @@ function Post() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
-        id: like,
+        id: postId,
       }),
-    });
+    })
+   
   }
 
   const userImage = user.profile_pic

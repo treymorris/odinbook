@@ -49,7 +49,7 @@ function Home() {
     const data = await fetch(`/api/users/${userid}`);
     const user = await data.json();
     setUser(user.user);
-    //console.log(user)
+    console.log(user)
     //setUsersPosts(user.users_posts);
     //setComments(user.comments);
   };
@@ -94,9 +94,8 @@ function Home() {
 
   const filtered = users.filter((user) => user._id !== userid); //list of users need to fix to exclude friends
   const filteredFriends = friends.filter((friend) => friend.to._id === userid); //list of users that have sent friend requests
-  const friendsAccepted = accepted.filter(
-    (accepted) => accepted.to._id === userid
-  );
+  console.log(filteredFriends)
+  const friendsAccepted = accepted.filter((accepted) => accepted.to._id === userid);
 
   return (
     <div className="bg-dark">
