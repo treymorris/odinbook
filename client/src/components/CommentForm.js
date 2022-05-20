@@ -1,50 +1,59 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-function CommentForm({ postid, userid }) {
-  const [text, setText] = useState([]);
 
-  let navigate = useNavigate();
+function CommentForm({ postid, userid, fetchUser }) {
+  const [text, setText] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleFormReset = () => {
+    setText('')
+  }
 
-    fetch("/api/comments/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        comment: text,
-        user: userid,
-        post: postid,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success on fetch:", data);
-        navigate("/userHome");
-      })
-      .catch((error) => {
-        console.log("Error:", error);
-      });
+  const handleKeyboard = (e) => {
+    if (e.key === "Enter") handleSubmit();
+    if (e.key === "Escape") handleFormReset();
   };
+
+  const handleSubmit = async () => {
+    
+    try {
+      const response = await fetch("/api/comments/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          comment: text,
+          user: userid,
+          post: postid,
+        }),
+      })
+      const data = await response.json();
+      console.log("Success on fetch:", data);
+      handleFormReset()
+      fetchUser()
+        }
+        catch(error)  {
+          console.log("Error:", error);
+        };
+      
+    };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <div>
         <div className="mb-3">
           <textarea
             name="comment"
             className="form-control"
             id="commentText"
             placeholder="Add Comment Here..."
-            rows="3"
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyboard}
+            value={text}
           ></textarea>
         </div>
-        <div>
+        {/* <div>
           <button
             type="button"
             className="btn btn-primary position-relative top-0 start-50 translate-middle"
@@ -52,8 +61,8 @@ function CommentForm({ postid, userid }) {
           >
             Submit
           </button>
-        </div>
-      </form>
+        </div> */}
+      </div>
     </div>
   );
 }

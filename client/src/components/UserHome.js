@@ -3,74 +3,152 @@ import { faAddressBook, faGear } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "./Navbar";
 import Post from "./Post";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PostForm from "./PostForm";
-
-function Home({
-  userImage,
-  user,
-  filteredFriends,
-  friendsAccepted,
-  filtered,
-  userid,
-  usersPosts,
-  fetchUser,
-  comments,
-  handleLike,
-}) {
+import { useEffect, useState } from "react";
+function UserHome() {
   //TODO  make all fetch calls async
-  const handleAccept = (friend) => {
-    fetch("/api/friends/accept", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        id: friend,
-      }),
-    });
+
+  const handleAccept = async (friend) => {
+    try {
+      const response = await fetch("/api/friends/accept", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          id: friend,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      fetchFriends();
+      fetchAccepted();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleDecline = async (friend) => {
+    try {
+      const response = await fetch("/api/friends/declined", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          id: friend,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      fetchFriends();
+      fetchAccepted();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleDecline = (friend) => {
-    fetch("/api/friends/decline", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        id: friend,
-      }),
-    });
+  const [user, setUser] = useState({});
+  const [users, setUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const [accepted, setAccepted] = useState([]);
+  const [usersPosts, setUsersPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+
+  const userid = localStorage.getItem("userid");
+
+  const userImage = user.profile_pic
+    ? user.profile_pic
+    : "https://via.placeholder.com/150";
+
+  useEffect(() => {
+    fetchUser();
+    fetchUsers();
+    fetchFriends();
+    fetchAccepted();
+  }, []);
+
+  const fetchUser = async () => {
+    const data = await fetch(`/api/users/${userid}`);
+    const user = await data.json();
+    setUser(user.user);
+    setUsersPosts(user.users_posts);
+    setComments(user.comments);
   };
 
+  const fetchUsers = async () => {
+    const data = await fetch("api/users");
+    const users = await data.json();
+    setUsers(users.user_list);
+  };
+
+  const fetchFriends = async () => {
+    const data = await fetch("api/friends/pending");
+    const friends = await data.json();
+    setFriends(friends.data);
+  };
+
+  const fetchAccepted = async () => {
+    const data = await fetch("api/friends/accepted");
+    const accepted = await data.json();
+    setAccepted(accepted.data);
+  };
+
+  const handleLike = async (postId) => {
+    try {
+      const response = await fetch("/api/posts/like", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          id: postId,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      fetchUser();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filtered = users.filter((user) => user._id !== userid); //list of users need to fix to exclude friends
+  const filteredFriends = friends.filter((friend) => friend.to._id === userid); //list of users that have sent friend requests
+  const friendsAccepted = accepted.filter(
+    (accepted) => accepted.to._id === userid
+  );
+  console.log(friendsAccepted);
   return (
     <div className="bg-dark">
       <Navbar />
       <div className="row">
         <div className="homeProfile col-3">
-          <div className="d-flex align-items-center bg-secondary border border-primary ms-4 w-85">
+          <div className="d-flex align-items-center bg-dark border border-primary ms-4 w-85">
             <img
               src={userImage}
               alt="user profile"
-              className="shrink p-1 "
+              className="shrink m-2"
             ></img>
-            <p className="text-light ms-2 mb-0">{user.username}</p>
+            <p className="text-light ms-2 mb-0 pt-1">{user.username}</p>
           </div>
-          <div className="d-flex align-items-center bg-secondary border border-primary ms-4 w-85 text-light">
+          <div className="d-flex align-items-center bg-dark border border-primary ms-4 w-85 text-light">
             <div className="ms-3">
               <FontAwesomeIcon icon={faAddressBook} size="2x" />
             </div>
-            <p className="text-light bg-secondary m-0 p-3">Friends</p>
+            <p className="text-light bg-dark m-0 p-3">Friends</p>
           </div>
-          <div className="d-flex align-items-center bg-secondary border border-primary ms-4 w-85 text-light">
+          <div className="d-flex align-items-center bg-dark border border-primary ms-4 w-85 text-light">
             <div className="ms-3">
               <FontAwesomeIcon icon={faGear} size="2x" />
             </div>
-            <p className="text-light bg-secondary m-0 p-3">Account</p>
+            <p className="text-light bg-dark m-0 p-3">Account</p>
           </div>
         </div>
-        <div className="postFormHome container w-50 ms-0">
+        <div className="postFormHome container w-50 ms-0 my-auto">
           <PostForm
             userid={userid}
             usersPosts={usersPosts}
@@ -83,9 +161,22 @@ function Home({
             {friendsAccepted.map((accepted) => (
               <div
                 key={accepted._id}
-                className="bg-secondary text-light border border-primary p-3"
+                className="bg-dark text-light border border-primary p-2"
               >
-                {accepted.from.username}
+                <Link
+                  className="p-2 nav-link bg-dark w-100"
+                  to={`/${accepted.from._id}`}
+                >
+                  <img
+                    src={
+                      accepted.from.profile_pic ||
+                      "https://via.placeholder.com/150"
+                    }
+                    alt="user profile"
+                    className="shrink me-3"
+                  ></img>
+                  {accepted.from.username}
+                </Link>
               </div>
             ))}
           </div>
@@ -119,16 +210,21 @@ function Home({
 
       <div className="row">
         <div className="w-25 col-1">
-          <h5 className="text-light p-3">Users</h5>
+          <h5 className="text-light p-3 ms-3">Users</h5>
           {filtered.map((filter) => (
-            <Link
+            <NavLink
               key={filter._id}
-              className="p-3 ms-4 nav-link text-light bg-secondary w-85 border border-primary"
+              className="p-3 ms-4 nav-link  bg-dark w-85 border border-primary"
               userid={userid}
               to={`/${filter._id}`}
             >
+              <img
+                src={filter.profile_pic || "https://via.placeholder.com/150"}
+                alt="user profile"
+                className="shrink me-3"
+              ></img>
               {filter.username}
-            </Link>
+            </NavLink>
           ))}
         </div>
         <div className="postsHome col-6">
@@ -138,6 +234,7 @@ function Home({
             comments={comments}
             handleLike={handleLike}
             userid={userid}
+            fetchUser={fetchUser}
           />
         </div>
       </div>
@@ -145,4 +242,4 @@ function Home({
   );
 }
 
-export default Home;
+export default UserHome;

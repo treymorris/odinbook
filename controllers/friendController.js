@@ -53,7 +53,7 @@ exports.friend_declined = function (req, res) {
         return next(err);
       }
       res.json({
-        message: "Accepted!",
+        message: "Declined!",
       });
     }
   );

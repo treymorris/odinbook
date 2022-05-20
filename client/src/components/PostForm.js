@@ -14,6 +14,19 @@ function PostForm({ userid, fetchUser }) {
     });
   };
 
+  const handleFormReset = () => {
+    setPost({
+        text: "",
+        title: ""
+      }
+    )
+  }
+
+  const handleKeyboard = (e) => {
+    if (e.key === "Enter") handleSubmit();
+    if (e.key === 'Escape') handleFormReset();
+  };
+
   const handleSubmit = async () => {
     try {
       const response = await fetch("/api/posts/create", {
@@ -30,6 +43,7 @@ function PostForm({ userid, fetchUser }) {
       });
       const data = await response.json();
       console.log(data);
+      handleFormReset()
       fetchUser()
     } catch (error) {
       console.log(error);
@@ -38,27 +52,31 @@ function PostForm({ userid, fetchUser }) {
 
   return (
     <div>
-      <form >
-        <div className="mb-3 pt-2">
+      <form>
+        <div className="mb-3 pt-2 ">
           <input
             type="text"
             name="title"
-            className="form-control"
+            className="form-control bg-dark"
             id="postTitle"
             placeholder="Title"
             onChange={handleChange}
+            onKeyDown={handleKeyboard}
+            value={post.title}
           />
         </div>
         <div className="mb-3">
           <textarea
             name="text"
-            className="form-control"
+            className="form-control bg-dark"
             id="postText"
             placeholder="Whaddya say today?"
             onChange={handleChange}
+            onKeyDown={handleKeyboard}
+            value={post.text}
           ></textarea>
         </div>
-        <div>
+        {/* <div>
           <button
             type="button"
             className="btn btn-primary mb-3"
@@ -66,7 +84,7 @@ function PostForm({ userid, fetchUser }) {
           >
             Submit Post
           </button>
-        </div>
+        </div> */}
       </form>
     </div>
   );

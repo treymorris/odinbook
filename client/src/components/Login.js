@@ -8,8 +8,8 @@ function Login() {
 
   let navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    //e.preventDefault();
 
     fetch("/api/users/login", {
       method: "POST",
@@ -27,7 +27,7 @@ function Login() {
         if (data.token) {
           localStorage.setItem("token", data.token);
           localStorage.setItem("userid", data.userid);
-          navigate("/userHome", { user: { id: data.userid } });
+          navigate("/userHome");
         } else if (data.error) {
           console.log(data.error);
           navigate("/");
@@ -37,6 +37,10 @@ function Login() {
         console.log(error);
       });
   };
+
+  const handleKeyboard = (e) => {
+    if (e.key === 'Enter') handleSubmit();
+  }
 
   const handleNewAccount = () => {
     navigate("/signup");
@@ -59,6 +63,7 @@ function Login() {
               id="username"
               required
               onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={handleKeyboard}
             />
           </div>
           <div className="mb-2 w-50 mx-auto">
@@ -69,6 +74,7 @@ function Login() {
               id="password"
               required
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyboard}
             />
           </div>
         </div>

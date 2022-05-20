@@ -8,13 +8,12 @@ function Comment({ comments, postid }) {
 
   return (
     <div>
-      
       {filtered.map((comment) => (
-        <div key={comment._id}>
-          <p>{comment.comment}</p>
-          <p>
+        <div key={comment._id} className="mt-1 d-flex justify-content-between bg-dark text-light">
+          <p className="p-3 my-auto" >{comment.comment}</p>
+          <p className="p-1" >
             {DateTime.fromISO(comment.date).toLocaleString(
-              DateTime.DATETIME_MED
+              DateTime.DATETIME_SHORT
             )}
           </p>
         </div>

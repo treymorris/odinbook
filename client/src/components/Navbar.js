@@ -2,9 +2,22 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
+
 function Navbar() {
-  const logout = () => {
-    localStorage.removeItem("user");
+
+   
+  const logout = async () => {
+    try {
+      const response = await fetch("api/users/logout", {
+        method: "POST",
+      });
+      const data = await response.json();
+      console.log(data);
+      localStorage.removeItem("userid");
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
