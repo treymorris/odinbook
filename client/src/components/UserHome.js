@@ -121,7 +121,7 @@ function UserHome() {
   const friendsAccepted = accepted.filter(
     (accepted) => accepted.to._id === userid
   );
-  console.log(friendsAccepted);
+  //console.log(friendsAccepted);
   return (
     <div className="bg-dark">
       <Navbar />
