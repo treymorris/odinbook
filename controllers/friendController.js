@@ -29,14 +29,35 @@ exports.friend_request = [
   },
 ];
 
-exports.friend_accept = function (req, res) {
-  Friend.findByIdAndUpdate(
-    req.body.id,
-    { status: "Accepted" },
-    function (err, update) {
-      if (err) {
-        return next(err);
-      }
+
+// exports.friend_accept = function (req, res) {
+//   Friend.findByIdAndUpdate(
+//     req.body.id,
+//     { status: "Accepted" },
+//     function (err, update) {
+//       if (err) {
+//         return next(err);
+//       }
+//       res.json({
+//         message: "Accepted!",
+//       });
+//     }
+//   );
+// };
+
+
+exports.friend_accept = function (req, res, next) {
+  
+  async.parallel({
+    friend: function (callback) {
+      Friend.findByIdAndUpdate(req.body.id, { status: "Accepted" }).exec(callback)
+    },
+    //need to make this a new object to push into array instead of just _id
+    user: function (callback) {
+      User.findByIdAndUpdate(req.body.user, { $push: { friends: req.body.id }}, {new: true}).exec(callback)
+    },
+  }, function (err, results) {
+      if (err) {return next(err);}
       res.json({
         message: "Accepted!",
       });
@@ -44,7 +65,7 @@ exports.friend_accept = function (req, res) {
   );
 };
 
-exports.friend_declined = function (req, res) {
+exports.friend_declined = function (req, res, next) {
   Friend.findByIdAndUpdate(
     req.body.id,
     { status: "Declined" },
@@ -59,8 +80,8 @@ exports.friend_declined = function (req, res) {
   );
 };
 
-exports.friend_pending = function (req, res) {
-  Friend.find({ status: "Pending" })
+exports.friend_pending = function (req, res, next) {
+  Friend.find({ status: "Pending"})
     .populate("from to")
     .exec(function (err, data) {
       if (err) {

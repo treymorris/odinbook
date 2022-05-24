@@ -3,7 +3,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-const Comment = require("../models/comment")
+const Comment = require("../models/comment");
 const { body, validationResult } = require("express-validator");
 const async = require("async");
 const Post = require("../models/post");
@@ -12,12 +12,12 @@ const Friend = require("../models/friend");
 exports.get_users = function (req, res) {
   User.find({})
     .sort([["username", "ascending"]])
-    .exec(function (err, list_users) {
+    .exec(function (err, results) {
       if (err) {
         return next(err);
       }
       res.status(200).json({
-        user_list: list_users,
+        users: results,
       });
     });
 };
@@ -26,7 +26,15 @@ exports.get_one_user = function (req, res, next) {
   async.parallel(
     {
       user: function (callback) {
-        User.findById(req.params.id).exec(callback);
+        User.findById(req.params.id)
+          // .populate({
+          //   path: 'user',
+          //   populate: {
+          //     path: 'friends',
+          //     model: 'Friend'
+          //   }
+          // })
+          .exec(callback);
       },
       users_posts: function (callback) {
         Post.find({ user: req.params.id }, "user title post date likes")
@@ -34,7 +42,12 @@ exports.get_one_user = function (req, res, next) {
           .exec(callback);
       },
       post_comments: function (callback) {
-        Comment.find({ user: req.params.id }).exec(callback);
+        Comment.find({ user: req.params.id }).populate("user").exec(callback);
+      },
+      friends: function (callback) {
+        Friend.find({ to: req.params.id, status: "Accepted" })
+          .populate("from to")
+          .exec(callback);
       },
     },
     function (err, results) {
@@ -50,7 +63,8 @@ exports.get_one_user = function (req, res, next) {
         message: "get one user",
         user: results.user,
         users_posts: results.users_posts,
-        comments: results.post_comments
+        comments: results.post_comments,
+        friends: results.friends,
       });
     }
   );

@@ -27,8 +27,8 @@ function UserIndex() {
 
   const handleClick = async () => {
     try {
-      const response = await fetch("/api/friends/accept", {
-        method: "PUT",
+      const response = await fetch("/api/friends/request", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -56,20 +56,20 @@ function UserIndex() {
                 </h1>
         </div>
       <div className="d-flex justify-content-center">
-        <div>
-          <p className="text-light mt-5 p-1  ms-5">
+        <div className="w-50">
+          <p className="text-light mt-5 p-1 ms-5">
             {user.firstname} {user.lastname}
           </p>
-          <p className="text-light  mt-2 p-1  ms-5">{user.email}</p>
-          <p className="text-light mt-2 p-1  ms-5">
+          <p className="text-light mt-2 p-1 ms-5">{user.email}</p>
+          <p className="text-light mt-2 p-1 ms-5">
             Birthday:{" "}
             {DateTime.fromISO(user.birth_date).toLocaleString(
               DateTime.DATE_MED
             )}
           </p>
-          <p className="text-light p-1  ms-5">Hobbies: {user.hobbies}</p>
-          <p className="text-light p-1  ms-5">{user.bio}</p>
-      <button className="btn nav-link ps-0 mt-3 mb-5 mx-auto" onClick={handleClick}>
+          <p className="text-light p-1 ms-5">Hobbies: {user.hobbies}</p>
+          <p className="text-light p-1 ms-5">{user.bio}</p>
+      <button className="btn btn-primary p-2 mt-3 ms-5" onClick={handleClick}>
         Send Friend Request
       </button>
         </div>

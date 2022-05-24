@@ -57,7 +57,7 @@ function PostForm({ userid, fetchUser }) {
           <input
             type="text"
             name="title"
-            className="form-control bg-dark"
+            className="form-control bg-dark text-light"
             id="postTitle"
             placeholder="Title"
             onChange={handleChange}
@@ -68,7 +68,7 @@ function PostForm({ userid, fetchUser }) {
         <div className="mb-3">
           <textarea
             name="text"
-            className="form-control bg-dark"
+            className="form-control bg-dark text-light"
             id="postText"
             placeholder="Whaddya say today?"
             onChange={handleChange}
