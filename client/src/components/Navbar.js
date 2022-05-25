@@ -21,7 +21,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar bg-secondary border-bottom border-primary border-1 mb-3">
+    <nav className="navbar sticky-top bg-secondary border-bottom border-primary border-1 mb-3">
       <div className="container-fluid">
         <NavLink className="p-3 nav-link display-6" to="/userHome">
           Odinbook

@@ -5,13 +5,21 @@ const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const { json } = require("express/lib/response");
 
-exports.get_comments = function (req, res) {
-  res.json({
-    message: "not implemented: get comments",
-  });
+exports.get_one_comment = function (req, res) {
+  Comment.find({ post: req.params.id})
+    .populate('user')
+    .populate('author')
+    .exec(function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      res.status(200).json({
+        comments: results,
+      });
+    });
 };
 
-exports.get_one_comment = function (req, res) {
+exports.get_comments = function (req, res) {
   res.json({
     message: "not implemented: get one comment",
   });
@@ -29,6 +37,7 @@ exports.create_comment = [
 
     const comment = new Comment({
       user: req.body.user,
+      author: req.body.author,
       post: req.body.post,
       comment: req.body.comment,
     }).save(function (err) {

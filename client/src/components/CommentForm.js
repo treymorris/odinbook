@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-function CommentForm({ postid, userid, fetchUser }) {
+function CommentForm({ postid, userid, fetchUser, authorId }) {
   const [text, setText] = useState('');
 
   const handleFormReset = () => {
@@ -25,6 +25,7 @@ function CommentForm({ postid, userid, fetchUser }) {
         body: JSON.stringify({
           comment: text,
           user: userid,
+          author: authorId,
           post: postid,
         }),
       })

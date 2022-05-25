@@ -4,17 +4,19 @@ import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 const { DateTime } = require("luxon");
 
-function Post({ usersPosts, userImage, comments, handleLike, userid, fetchUser }) {
+function Post({ usersPosts, comments, handleLike, userid, fetchUser }) {
+  
+  console.log('post page',comments)
   return (
     <div>
       {usersPosts.map((post) => (
         <div
-          className="card w-100 list-group-flush"
+          className="card w-100 list-group-flush mb-3"
           key={post._id}
         >
           <div className="d-flex align-items-center ms-1 p-2 border-bottom border-3">
-            <img src={userImage} className="shrink" alt="post author" />
-            <h6 className="ms-3 mb-0">{post.user.username}</h6>
+            <img src={post.author.profile_pic} className="shrink" alt="post author" />
+            <h6 className="ms-3 mb-0">{post.author.username}</h6>
             <p className="ms-auto mb-0">
               {DateTime.fromISO(post.date).toLocaleString(
                 DateTime.DATETIME_MED
@@ -43,6 +45,7 @@ function Post({ usersPosts, userImage, comments, handleLike, userid, fetchUser }
               postid={post._id}
               userid={userid}
               fetchUser={fetchUser}
+              authorId={post.author._id}
             />
           </div>
         </div>

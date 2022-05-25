@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-function PostForm({ userid, fetchUser }) {
+function PostForm({ userid, fetchUser, authorId }) {
   const [post, setPost] = useState({
     text: "",
     title: "",
   });
-
+//console.log('author id',authorId)
   const handleChange = (e) => {
     console.log(post);
     const { name, value } = e.target;
@@ -39,6 +39,7 @@ function PostForm({ userid, fetchUser }) {
           title: post.title,
           post: post.text,
           _id: userid,
+          author: authorId
         }),
       });
       const data = await response.json();

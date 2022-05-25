@@ -63,9 +63,10 @@ function UserHome() {
   const [friendRequests, setFriendRequests] = useState([]);
   const [usersPosts, setUsersPosts] = useState([]);
   const [comments, setComments] = useState([]);
+  
+  //console.log('user', user.user.profile_pic)
 
   const userid = localStorage.getItem("userid");
-  //console.log('user', user.user.profile_pic)
   const userImage = user.user.profile_pic
     ? user.user.profile_pic
     : "https://via.placeholder.com/150";
@@ -82,7 +83,7 @@ function UserHome() {
     setUser(user);
     setUsersPosts(user.users_posts);
     setComments(user.comments);
-    //console.log("user", user);
+    console.log("user home page", user);
   };
 
   const fetchUsers = async () => {
@@ -160,7 +161,7 @@ function UserHome() {
         <div className="postFormHome container w-50 ms-0 my-auto">
           <PostForm
             userid={userid}
-            usersPosts={usersPosts}
+            authorId={userid}
             fetchUser={fetchUser}
           />
         </div>

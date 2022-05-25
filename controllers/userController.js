@@ -12,6 +12,7 @@ const Friend = require("../models/friend");
 exports.get_users = function (req, res) {
   User.find({})
     .sort([["username", "ascending"]])
+    //.populate('friends')
     .exec(function (err, results) {
       if (err) {
         return next(err);
@@ -37,12 +38,16 @@ exports.get_one_user = function (req, res, next) {
           .exec(callback);
       },
       users_posts: function (callback) {
-        Post.find({ user: req.params.id }, "user title post date likes")
+        Post.find({ user: req.params.id })
           .populate("user")
+          .populate("author")
           .exec(callback);
       },
       post_comments: function (callback) {
-        Comment.find({ user: req.params.id }).populate("user").exec(callback);
+        Comment.find({ user: req.params.id })
+          .populate("user")
+          .populate("author")
+          .exec(callback);
       },
       friends: function (callback) {
         Friend.find({ to: req.params.id, status: "Accepted" })
