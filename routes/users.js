@@ -22,7 +22,7 @@ router.post("/logout", user_controller.user_logout);
 router.post("/create", verifyToken, user_controller.user_create_profile);
 
 //POST user update profile
-router.post("/:id/update", verifyToken, user_controller.user_profile_update);
+router.post("/update/:id", verifyToken, user_controller.user_profile_update);
 
 // GET users
 router.get("/", user_controller.get_users);

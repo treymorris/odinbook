@@ -20,6 +20,7 @@ function UserIndex() {
       },
     ],
   });
+  
   let navigate = useNavigate();
   const userImage = user.user.profile_pic
     ? user.user.profile_pic
@@ -27,6 +28,7 @@ function UserIndex() {
 
   useEffect(() => {
     fetchUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUser = async () => {
@@ -85,12 +87,6 @@ function UserIndex() {
       <Navbar />
       <div>
         <div className="d-flex">
-          <div>
-            <div className="ms-5 mt-5">
-              <img src={userImage} alt="current user"></img>
-            </div>
-            <h1 className="text-light  my-auto ms-5">{user.user.username}</h1>
-          </div>
           <div className="container w-50 mt-5">
             <PostForm userid={id} fetchUser={fetchUser} authorId={userid} />
             <Post
@@ -104,7 +100,13 @@ function UserIndex() {
           </div>
         </div>
 
-        <div className="position-absolute top-50 start-0">
+        <div className="profileInfo">
+          <div>
+            <h1 className="text-light my-auto ms-5 mt-3">{user.user.username}</h1>
+          </div>
+            <div className="ms-5 mt-5">
+              <img src={userImage} alt="current user"></img>
+            </div>
           <p className="text-light mt-5 p-1 ms-5">
             {user.user.firstname} {user.user.lastname}
           </p>

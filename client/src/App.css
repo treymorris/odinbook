@@ -20,11 +20,21 @@ body {
 }
 
 .friendsHome {
-     width: 25vw;
+  width: 25vw;
   position: absolute;
   z-index: 1;
   top: 125px;
   right: 10px;
+  overflow-x: hidden;
+  padding: 8px 0; 
+}
+
+.profileInfo {
+  width: 25vw;
+  position: absolute;
+  z-index: 1;
+  top: 125px;
+  left: 10px;
   overflow-x: hidden;
   padding: 8px 0; 
 }

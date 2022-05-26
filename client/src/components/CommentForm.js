@@ -1,8 +1,10 @@
 import { useState } from "react";
 
 
-function CommentForm({ postid, userid, fetchUser, authorId }) {
+function CommentForm({ postid, userid, fetchUser, authorId, fetchComments }) {
   const [text, setText] = useState('');
+
+  
 
   const handleFormReset = () => {
     setText('')
@@ -33,6 +35,7 @@ function CommentForm({ postid, userid, fetchUser, authorId }) {
       console.log("Success on fetch:", data);
       handleFormReset()
       fetchUser()
+      fetchComments()
         }
         catch(error)  {
           console.log("Error:", error);

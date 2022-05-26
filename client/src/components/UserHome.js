@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import PostForm from "./PostForm";
 import { useEffect, useState } from "react";
+
 function UserHome() {
+
   //TODO  make all fetch calls async
 
   const handleAccept = async (friend) => {
@@ -62,19 +64,17 @@ function UserHome() {
   const [users, setUsers] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [usersPosts, setUsersPosts] = useState([]);
-  const [comments, setComments] = useState([]);
-  
-  //console.log('user', user.user.profile_pic)
-
   const userid = localStorage.getItem("userid");
   const userImage = user.user.profile_pic
     ? user.user.profile_pic
     : "https://via.placeholder.com/150";
 
   useEffect(() => {
-    fetchUser();
     fetchUsers();
+    fetchUser();
     fetchFriendRequests();
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUser = async () => {
@@ -82,15 +82,13 @@ function UserHome() {
     const user = await data.json();
     setUser(user);
     setUsersPosts(user.users_posts);
-    setComments(user.comments);
-    console.log("user home page", user);
+    //console.log("user home page", user);
   };
 
   const fetchUsers = async () => {
     const data = await fetch("api/users");
     const users = await data.json();
     setUsers(users.users);
-    //console.log("users", users);
   };
 
   const fetchFriendRequests = async () => {
@@ -120,15 +118,19 @@ function UserHome() {
   };
 
   const requests = friendRequests.filter((friend) => friend.to._id === userid); //list of users that have sent friend requests
-  let usersList = users.filter((user) => user._id !== userid); //list of users that are not me
-
-  for (var i = usersList.length - 1; i >= 0; i--) {
-    for (var j = 0; j < user.friends.length; j++) {
-      if (usersList[i]._id === user.friends[j].from._id) {    //filter out friends from users list
-        usersList.splice(i, 1);
-      }
-    }
-  }
+  const usersList = users.filter((user) => user._id !== userid); //list of users that are not me
+  //const newArray = user.friends.map((friend) => friend.from)
+ 
+    // for (let i = usersList.length - 1; i >= 0; i--) {
+    //   for (let j = 0; j < newArray.length; j++) {
+    //     if (usersList[i]._id === newArray[j]._id) {
+    //      usersList.splice(i, 1);
+    //     }
+    //   }
+    // }
+  
+  //console.log('usersList',usersList);
+  //console.log('newArray', newArray)
 
   return (
     <div className="bg-dark">
@@ -155,15 +157,13 @@ function UserHome() {
             <div className="ms-3">
               <FontAwesomeIcon icon={faGear} size="2x" />
             </div>
-            <p className="text-light bg-dark m-0 p-3">Account</p>
+            <Link to={`/updateProfile/${user.user._id}`} className="nav-link p-0" >
+              <p className="text-primary bg-dark m-0 p-3">Account</p>
+            </Link>
           </div>
         </div>
         <div className="postFormHome container w-50 ms-0 my-auto">
-          <PostForm
-            userid={userid}
-            authorId={userid}
-            fetchUser={fetchUser}
-          />
+          <PostForm userid={userid} authorId={userid} fetchUser={fetchUser} />
         </div>
         <div className="friendsHome col">
           <div className="container-fluid">
@@ -248,8 +248,6 @@ function UserHome() {
         <div className="postsHome col-6">
           <Post
             usersPosts={usersPosts}
-            userImage={userImage}
-            comments={comments}
             handleLike={handleLike}
             userid={userid}
             fetchUser={fetchUser}
