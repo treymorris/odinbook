@@ -48,18 +48,21 @@ exports.friend_request = [
 
 exports.friend_accept = function (req, res, next) {
   
-  async.parallel({
+  async.series({
     friend: function (callback) {
-      Friend.findByIdAndUpdate(req.body.id, { status: "Accepted" }).exec(callback)
+      Friend.findByIdAndUpdate(req.body.id, { status: "Accepted" }, {new: true}).exec(callback)
     },
-    //need to make this a new object to push into array instead of just _id
-    user: function (callback) {
-      User.findByIdAndUpdate(req.body.user, { $push: { friends: req.body.id }}, {new: true}).exec(callback)
+    acceptedby: function (callback) {
+      User.findByIdAndUpdate(req.body.user, { $push: { friends: req.body.friend }}, {new: true}).exec(callback)
+    },
+    requestedby: function (callback) {
+      User.findByIdAndUpdate(req.body.friend, { $push: { friends: req.body.user }}, {new: true}).exec(callback)
     },
   }, function (err, results) {
       if (err) {return next(err);}
       res.json({
         message: "Accepted!",
+        results: results
       });
     }
   );

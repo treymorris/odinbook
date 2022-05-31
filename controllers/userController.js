@@ -11,8 +11,8 @@ const Friend = require("../models/friend");
 
 exports.get_users = function (req, res) {
   User.find({})
-    .sort([["username", "ascending"]])
-    //.populate('friends')
+    .populate({path: "friends", model: "User"})
+    //.sort([["username", "ascending"]])
     .exec(function (err, results) {
       if (err) {
         return next(err);
@@ -28,13 +28,10 @@ exports.get_one_user = function (req, res, next) {
     {
       user: function (callback) {
         User.findById(req.params.id)
-          // .populate({
-          //   path: 'user',
-          //   populate: {
-          //     path: 'friends',
-          //     model: 'Friend'
-          //   }
-          // })
+          .populate({
+            path: "friends",
+            model: "User",
+            })
           .exec(callback);
       },
       users_posts: function (callback) {
@@ -50,7 +47,7 @@ exports.get_one_user = function (req, res, next) {
           .exec(callback);
       },
       friends: function (callback) {
-        Friend.find({ to: req.params.id, status: "Accepted" })
+        Friend.find({ $or: [{to: req.params.id}, {from: req.params.id}], status: "Accepted" })
           .populate("from to")
           .exec(callback);
       },
@@ -111,6 +108,7 @@ exports.user_signup = [
         }
         return res.json({
           message: "success!",
+          user
         });
       });
     });
@@ -148,48 +146,78 @@ exports.user_logout = function (req, res) {
   res.json({ message: "Logout success!" });
 };
 
-exports.user_create_profile = [
-  body("occupation", "Please enter your occupation.")
-    .optional()
-    .trim()
-    .isLength({ max: 25 })
-    .escape(),
-  body("hobbies", "Please enter a hobby.")
-    .optional()
-    .trim()
-    .isLength({ max: 250 })
-    .escape(),
+// exports.user_create_profile = [
+//   body("occupation", "Please enter your occupation.")
+//     .optional()
+//     .trim()
+//     .isLength({ max: 25 })
+//     .escape(),
+//   body("hobbies", "Please enter a hobby.")
+//     .optional()
+//     .trim()
+//     .isLength({ max: 250 })
+//     .escape(),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
+//   (req, res, next) => {
+//     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) return res.json({ errors: errors.array() });
+//     if (!errors.isEmpty()) return res.json({ errors: errors.array() });
 
-    const profile = new Profile({
-      user: req.body.user,
-      birth_date: req.body.birth_date,
-      occupation: req.body.occupation,
-      profile_pic: req.body.profile_pic,
-      hobbies: req.body.hobbies,
-    }).save(function (err) {
-      if (err) {
-        return next(err);
-      }
-    });
-    res.json({
-      message: "Profile created!",
-    });
-  },
-];
+//     const profile = new Profile({
+//       user: req.body.user,
+//       birth_date: req.body.birth_date,
+//       occupation: req.body.occupation,
+//       profile_pic: req.body.profile_pic,
+//       hobbies: req.body.hobbies,
+//     }).save(function (err) {
+//       if (err) {
+//         return next(err);
+//       }
+//     });
+//     res.json({
+//       message: "Profile created!",
+//     });
+//   },
+// ];
 
 exports.user_profile_update = [
-  body("occupation", "Please enter your occupation.")
+  body("firstname", "Please enter a first name!")
+    
     .trim()
-    .isLength({ max: 25 })
+    .isLength({ min: 1 })
+    .escape()
+    .isAlphanumeric()
+    .withMessage("First name has non-alphanumeric characters."),
+  body("lastname", "Please enter a last name!")
+    
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .isAlphanumeric()
+    .withMessage("Last name has non-alphanumeric characters."),
+  body("username", "Please enter a Username!")
+    
+    .trim()
+    .isLength({ min: 1 })
     .escape(),
-  body("hobbies", "Please enter a hobby.")
+  body("email", "Email required!")
+    
     .trim()
-    .isLength({ max: 250 })
+    .isEmail()
+    .escape(),
+  body("birthday", "Please enter a Date!")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+  body("bio", "Please enter a Bio!")
+    .optional({ checkFalsy: true })
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("hobbies", "Please enter a Hobby!")
+    .optional({ checkFalsy: true })
+    .trim()
+    .isLength({ min: 1 })
     .escape(),
 
   (req, res, next) => {
@@ -197,28 +225,26 @@ exports.user_profile_update = [
 
     if (!errors.isEmpty()) return res.json({ errors: errors.array() });
 
-    const profile = new Profile({
-      user: req.body.user,
+    const user = new User({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      username: req.body.username,
       birth_date: req.body.birth_date,
-      occupation: req.body.occupation,
+      bio: req.body.bio,
       profile_pic: req.body.profile_pic,
       hobbies: req.body.hobbies,
       _id: req.body._id,
     });
-    Profile.findByIdAndUpdate(
-      req.body._id,
-      profile,
-      {},
-      function (err, theprofile) {
-        if (err) {
-          return next(err);
-        }
-        res.json({
-          message: "Profile updated!",
-          user: theprofile,
-        });
+    User.findByIdAndUpdate(req.body._id, user, {}, function (err, data) {
+      if (err) {
+        return next(err);
       }
-    );
+      res.json({
+        message: "Profile updated!",
+        user: data,
+      });
+    });
   },
 ];
 

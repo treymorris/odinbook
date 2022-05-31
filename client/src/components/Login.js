@@ -55,9 +55,8 @@ function Login() {
       <h1 className="text-light text-center mb-5 mt-5">OdinBook</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <div className="mb-2 w-50 mx-auto">
+          <div className="mb-2 w-50 mx-auto form-floating">
             <input
-              placeholder="Username"
               type="username"
               className="form-control form-control-sm"
               id="username"
@@ -65,10 +64,10 @@ function Login() {
               onChange={(e) => setUsername(e.target.value)}
               onKeyDown={handleKeyboard}
             />
+            <label htmlFor="firstname">Username</label>
           </div>
-          <div className="mb-2 w-50 mx-auto">
+          <div className="mb-2 w-50 mx-auto form-floating">
             <input
-              placeholder="Password"
               type="password"
               className="form-control form-control-sm"
               id="password"
@@ -76,6 +75,7 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={handleKeyboard}
             />
+            <label htmlFor="firstname">Password</label>
           </div>
         </div>
         <div className="d-grid gap-2 col-6 mx-auto">

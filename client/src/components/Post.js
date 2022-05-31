@@ -14,7 +14,7 @@ function Post({ usersPosts, handleLike, userid, fetchUser }) {
         <div className="card w-100 list-group-flush mb-3" key={post._id}>
           <div className="d-flex align-items-center ms-1 p-2 border-bottom border-3">
             <img
-              src={post.author.profile_pic}
+              src={post.author.profile_pic || "https://via.placeholder.com/150"}
               className="shrink"
               alt="post author"
             />

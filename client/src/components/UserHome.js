@@ -11,7 +11,9 @@ function UserHome() {
 
   //TODO  make all fetch calls async
 
-  const handleAccept = async (friend) => {
+  const handleAccept = async (friend, friendid) => {
+    //console.log('userid', userid)
+    //console.log('friendid', friendid)
     try {
       const response = await fetch("/api/friends/accept", {
         method: "PUT",
@@ -22,6 +24,7 @@ function UserHome() {
         body: JSON.stringify({
           id: friend,
           user: userid,
+          friend: friendid
         }),
       });
       const data = await response.json();
@@ -32,6 +35,7 @@ function UserHome() {
       console.log(error);
     }
   };
+
   const handleDecline = async (friend) => {
     try {
       const response = await fetch("/api/friends/declined", {
@@ -58,9 +62,11 @@ function UserHome() {
     friends: [
       {
         from: {},
+        to: {}
       },
     ],
   });
+
   const [users, setUsers] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [usersPosts, setUsersPosts] = useState([]);
@@ -82,13 +88,14 @@ function UserHome() {
     const user = await data.json();
     setUser(user);
     setUsersPosts(user.users_posts);
-    //console.log("user home page", user);
   };
+  //console.log("user home page", user.user.friends);
 
   const fetchUsers = async () => {
     const data = await fetch("api/users");
     const users = await data.json();
     setUsers(users.users);
+    //console.log("users home page", users);
   };
 
   const fetchFriendRequests = async () => {
@@ -131,7 +138,7 @@ function UserHome() {
   
   //console.log('usersList',usersList);
   //console.log('newArray', newArray)
-
+  //console.log('user home user', user)
   return (
     <div className="bg-dark">
       <Navbar />
@@ -175,17 +182,17 @@ function UserHome() {
               >
                 <Link
                   className="p-2 nav-link bg-dark w-100"
-                  to={`/${accepted.from._id}`}
+                  to={`/${(accepted.from._id === user.user._id) ? accepted.to._id : accepted.from._id}`}
                 >
                   <img
                     src={
-                      accepted.from.profile_pic ||
+                      ((accepted.from._id === user.user._id)? accepted.to.profile_pic : accepted.from.profile_pic) ||
                       "https://via.placeholder.com/150"
                     }
                     alt="user profile"
                     className="shrink me-3"
                   ></img>
-                  {accepted.from.username}
+                  {(accepted.from.username === user.user.username) ? accepted.to.username : accepted.from.username}
                 </Link>
               </div>
             ))}
@@ -210,7 +217,7 @@ function UserHome() {
                 </Link>
                 <button
                   className="btn btn-outline-primary w-50"
-                  onClick={() => handleAccept(friend._id)}
+                  onClick={() => handleAccept(friend._id, friend.from._id)}
                 >
                   Accept
                 </button>

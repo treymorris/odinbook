@@ -19,10 +19,10 @@ router.post("/login", user_controller.user_login);
 router.post("/logout", user_controller.user_logout);
 
 // POST user add profile
-router.post("/create", verifyToken, user_controller.user_create_profile);
+//router.post("/create", verifyToken, user_controller.user_create_profile);
 
 //POST user update profile
-router.post("/update/:id", verifyToken, user_controller.user_profile_update);
+router.put("/update/:id", verifyToken, user_controller.user_profile_update);
 
 // GET users
 router.get("/", user_controller.get_users);

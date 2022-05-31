@@ -24,7 +24,9 @@ function Comment({  postid, userid, fetchUser, authorId }) {
         <div key={comment._id}>
           <div className=" p-2 mt-1 d-flex align-items-center bg-dark text-light">
             <img
-              src={comment.author.profile_pic}
+              src={
+                comment.author.profile_pic || "https://via.placeholder.com/150"
+              }
               className="ms-2 shrink"
               alt="post author"
             />
@@ -42,7 +44,7 @@ function Comment({  postid, userid, fetchUser, authorId }) {
         postid={postid}
         userid={userid}
         fetchUser={fetchUser}
-        authorId={authorId}
+        authorId={userid}
         fetchComments={fetchComments}
       />
     </div>

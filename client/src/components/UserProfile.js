@@ -10,6 +10,9 @@ function UserIndex() {
   const { id } = useParams();
   const userid = localStorage.getItem("userid");
   //console.log('profile page',userid)
+  const [friends, setFriends] = useState([{
+    _id: ''
+  }]);
   const [usersPosts, setUsersPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [user, setUser] = useState({
@@ -38,7 +41,9 @@ function UserIndex() {
     setUser(user);
     setUsersPosts(user.users_posts);
     setComments(user.comments);
+    setFriends(user.user.friends)
   };
+  console.log(user.user.friends)
   
   const handleClick = async () => {
     try {
@@ -80,8 +85,11 @@ function UserIndex() {
       console.log(error);
     }
   };
-  console.log('user profile page',comments)
-
+  console.log('user id',userid)
+  console.log('profile id', id)
+  //console.log('user friends', user.user.friends)
+  //const friends = user.user.friends
+  console.log('friends',friends)
   return (
     <div>
       <Navbar />
@@ -119,12 +127,13 @@ function UserIndex() {
           </p>
           <p className="text-light p-1 ms-5">Hobbies: {user.user.hobbies}</p>
           <p className="text-light p-1 ms-5">{user.user.bio}</p>
-          <button
+          {!friends.includes(userid) &&
+            <button
             className="btn btn-primary p-2 mt-3 ms-5"
             onClick={handleClick}
           >
             Send Friend Request
-          </button>
+          </button>}
         </div>
       </div>
     </div>
