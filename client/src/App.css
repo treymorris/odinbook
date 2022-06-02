@@ -19,6 +19,11 @@ body {
     border-radius: 50%;
 }
 
+.friendPic {
+  height: 350px;
+  width: 350px;
+}
+
 .friendsHome {
   width: 25vw;
   position: absolute;

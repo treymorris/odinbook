@@ -28,7 +28,7 @@ function Navbar() {
           to="/userHome"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          Odinbook
+          Burgerbook
         </NavLink>
         <div className="nav ">
           <NavLink className="p-3 nav-link" to="/" onClick={logout}>

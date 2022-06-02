@@ -1,4 +1,4 @@
-import "../App.css";
+
 import PostForm from "./PostForm";
 import Post from "./Post";
 import { useEffect, useState } from "react";
@@ -9,10 +9,7 @@ const { DateTime } = require("luxon");
 function UserIndex() {
   const { id } = useParams();
   const userid = localStorage.getItem("userid");
-  //console.log('profile page',userid)
-  const [friends, setFriends] = useState([{
-    _id: ''
-  }]);
+  const [friends, setFriends] = useState([]);
   const [usersPosts, setUsersPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [user, setUser] = useState({
@@ -23,15 +20,16 @@ function UserIndex() {
       },
     ],
   });
-  
+  const friendsid = friends.map(element => element._id);
   let navigate = useNavigate();
   const userImage = user.user.profile_pic
-    ? user.user.profile_pic
-    : "https://via.placeholder.com/150";
+  ? user.user.profile_pic
+  : "https://via.placeholder.com/150";
+  
 
   useEffect(() => {
     fetchUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUser = async () => {
@@ -43,7 +41,7 @@ function UserIndex() {
     setComments(user.comments);
     setFriends(user.user.friends)
   };
-  console.log(user.user.friends)
+  
   
   const handleClick = async () => {
     try {
@@ -85,11 +83,8 @@ function UserIndex() {
       console.log(error);
     }
   };
-  console.log('user id',userid)
-  console.log('profile id', id)
-  //console.log('user friends', user.user.friends)
-  //const friends = user.user.friends
-  console.log('friends',friends)
+  
+  
   return (
     <div>
       <Navbar />
@@ -112,22 +107,22 @@ function UserIndex() {
           <div>
             <h1 className="text-light my-auto ms-5 mt-3">{user.user.username}</h1>
           </div>
-            <div className="ms-5 mt-5">
+            <div className="ms-5 mt-2">
               <img src={userImage} alt="current user"></img>
             </div>
-          <p className="text-light mt-5 p-1 ms-5">
+          <p className="text-light mt-2  ms-5">
             {user.user.firstname} {user.user.lastname}
           </p>
-          <p className="text-light mt-2 p-1 ms-5">{user.user.email}</p>
-          <p className="text-light mt-2 p-1 ms-5">
+          <p className="text-light mt-1  ms-5">{user.user.email}</p>
+          <p className="text-light mt-2  ms-5">
             Birthday:{" "}
             {DateTime.fromISO(user.user.birth_date).toLocaleString(
               DateTime.DATE_MED
             )}
           </p>
-          <p className="text-light p-1 ms-5">Hobbies: {user.user.hobbies}</p>
-          <p className="text-light p-1 ms-5">{user.user.bio}</p>
-          {!friends.includes(userid) &&
+          <p className="text-light ms-5">Hobbies: {user.user.hobbies}</p>
+          <p className="text-light ms-5">{user.user.bio}</p>
+          {!friendsid.includes(userid) &&
             <button
             className="btn btn-primary p-2 mt-3 ms-5"
             onClick={handleClick}

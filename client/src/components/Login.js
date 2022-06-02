@@ -23,13 +23,13 @@ function Login() {
     })
       .then((response) => response.json()) //catch token here and save to local storage
       .then((data) => {
-        //console.log(data)
         if (data.token) {
           localStorage.setItem("token", data.token);
           localStorage.setItem("userid", data.userid);
           navigate("/userHome");
         } else if (data.error) {
           console.log(data.error);
+          data.error.forEach((error)=> {alert(error.msg)})
           navigate("/");
         }
       })

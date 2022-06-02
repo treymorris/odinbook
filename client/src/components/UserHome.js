@@ -8,12 +8,7 @@ import PostForm from "./PostForm";
 import { useEffect, useState } from "react";
 
 function UserHome() {
-
-  //TODO  make all fetch calls async
-
   const handleAccept = async (friend, friendid) => {
-    //console.log('userid', userid)
-    //console.log('friendid', friendid)
     try {
       const response = await fetch("/api/friends/accept", {
         method: "PUT",
@@ -24,7 +19,7 @@ function UserHome() {
         body: JSON.stringify({
           id: friend,
           user: userid,
-          friend: friendid
+          friend: friendid,
         }),
       });
       const data = await response.json();
@@ -62,7 +57,7 @@ function UserHome() {
     friends: [
       {
         from: {},
-        to: {}
+        to: {},
       },
     ],
   });
@@ -79,8 +74,7 @@ function UserHome() {
     fetchUsers();
     fetchUser();
     fetchFriendRequests();
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUser = async () => {
@@ -89,13 +83,11 @@ function UserHome() {
     setUser(user);
     setUsersPosts(user.users_posts);
   };
-  //console.log("user home page", user.user.friends);
 
   const fetchUsers = async () => {
     const data = await fetch("api/users");
     const users = await data.json();
     setUsers(users.users);
-    //console.log("users home page", users);
   };
 
   const fetchFriendRequests = async () => {
@@ -125,21 +117,22 @@ function UserHome() {
   };
 
   const requests = friendRequests.filter((friend) => friend.to._id === userid); //list of users that have sent friend requests
-  const usersList = users.filter((user) => user._id !== userid); //list of users that are not me
-  //const newArray = user.friends.map((friend) => friend.from)
- 
-    // for (let i = usersList.length - 1; i >= 0; i--) {
-    //   for (let j = 0; j < newArray.length; j++) {
-    //     if (usersList[i]._id === newArray[j]._id) {
-    //      usersList.splice(i, 1);
-    //     }
-    //   }
-    // }
-  
-  //console.log('usersList',usersList);
-  //console.log('newArray', newArray)
-  //console.log('user home user', user)
-  return (
+  const friendsList = user.user.friends
+  //console.log(friendsList)
+  let usersList = users.filter((user) => user._id !== userid); //list of users that are not me
+  //console.log(usersList)
+  function newArray() {
+    if (friendsList !== null) {
+      return usersList = usersList.filter(
+        ({ _id: id1 }) => !friendsList.some(({ _id: id2 }) => id2 === id1)
+      )
+      
+    }
+  }
+newArray();
+//console.log(usersList)
+
+return (
     <div className="bg-dark">
       <Navbar />
       <div className="row">
@@ -158,13 +151,18 @@ function UserHome() {
             <div className="ms-3">
               <FontAwesomeIcon icon={faAddressBook} size="2x" />
             </div>
-            <p className="text-light bg-dark m-0 p-3">Friends</p>
+            <Link to={`/friends`} className="nav-link p-0">
+              <p className="text-primary bg-dark m-0 p-3">Friends</p>
+            </Link>
           </div>
           <div className="d-flex align-items-center bg-dark border border-primary ms-4 w-85 text-light">
             <div className="ms-3">
               <FontAwesomeIcon icon={faGear} size="2x" />
             </div>
-            <Link to={`/updateProfile/${user.user._id}`} className="nav-link p-0" >
+            <Link
+              to={`/updateProfile/${user.user._id}`}
+              className="nav-link p-0"
+            >
               <p className="text-primary bg-dark m-0 p-3">Account</p>
             </Link>
           </div>
@@ -182,17 +180,25 @@ function UserHome() {
               >
                 <Link
                   className="p-2 nav-link bg-dark w-100"
-                  to={`/${(accepted.from._id === user.user._id) ? accepted.to._id : accepted.from._id}`}
+                  to={`/${
+                    accepted.from._id === user.user._id
+                      ? accepted.to._id
+                      : accepted.from._id
+                  }`}
                 >
                   <img
                     src={
-                      ((accepted.from._id === user.user._id)? accepted.to.profile_pic : accepted.from.profile_pic) ||
+                      (accepted.from._id === user.user._id
+                        ? accepted.to.profile_pic
+                        : accepted.from.profile_pic) ||
                       "https://via.placeholder.com/150"
                     }
                     alt="user profile"
                     className="shrink me-3"
                   ></img>
-                  {(accepted.from.username === user.user.username) ? accepted.to.username : accepted.from.username}
+                  {accepted.from.username === user.user.username
+                    ? accepted.to.username
+                    : accepted.from.username}
                 </Link>
               </div>
             ))}

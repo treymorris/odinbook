@@ -86,14 +86,14 @@ exports.user_signup = [
     .isLength({ min: 1 })
     .escape(),
   body("email", "Email required!").trim().isEmail().escape(),
-  body("password", "Please enter a password!")
+  body("password", "Please enter a password, min 5 characters!")
     .trim()
     .isLength({ min: 5 })
     .escape(),
 
   (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.json({ errors: errors.array() });
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     bcrypt.hash(req.body.password, 10, (err, hashedPass) => {
       if (err) return next(err);
       const user = new User({
