@@ -10,8 +10,6 @@ function SignupForm() {
   let navigate = useNavigate();
 
   const handleSubmit = () => {
-    //e.preventDefault();
-
     fetch("/api/users/signup", {
       method: "POST",
       headers: {
@@ -27,7 +25,7 @@ function SignupForm() {
     })
       .then((response) => response.json()) //catch token here and save to local storage
       .then((data) => {
-        console.log('data', data);
+        console.log("data", data);
         if (data.token) {
           localStorage.setItem("user", data.token);
           navigate("/");
@@ -36,7 +34,7 @@ function SignupForm() {
             alert(error.msg);
           });
         }
-          })
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -45,7 +43,6 @@ function SignupForm() {
   const handleKeyboard = (e) => {
     if (e.key === "Enter") handleSubmit();
   };
-
 
   return (
     <div className="container mt-5">

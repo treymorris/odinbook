@@ -1,13 +1,10 @@
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import Comment from "./Comment";
-//import CommentForm from "./CommentForm";
+
 const { DateTime } = require("luxon");
 
 function Post({ usersPosts, handleLike, userid, fetchUser }) {
-  
-
   return (
     <div>
       {usersPosts.map((post) => (
@@ -48,13 +45,6 @@ function Post({ usersPosts, handleLike, userid, fetchUser }) {
               fetchUser={fetchUser}
               authorId={post.author._id}
             />
-            {/* <CommentForm
-              postid={post._id}
-              userid={userid}
-              fetchUser={fetchUser}
-              authorId={post.author._id}
-              
-            /> */}
           </div>
         </div>
       ))}

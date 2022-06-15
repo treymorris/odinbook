@@ -5,9 +5,8 @@ function PostForm({ userid, fetchUser, authorId }) {
     text: "",
     title: "",
   });
-//console.log('author id',authorId)
+
   const handleChange = (e) => {
-    console.log(post);
     const { name, value } = e.target;
     setPost((prevState) => {
       return { ...prevState, [name]: value };
@@ -16,15 +15,14 @@ function PostForm({ userid, fetchUser, authorId }) {
 
   const handleFormReset = () => {
     setPost({
-        text: "",
-        title: ""
-      }
-    )
-  }
+      text: "",
+      title: "",
+    });
+  };
 
   const handleKeyboard = (e) => {
     if (e.key === "Enter") handleSubmit();
-    if (e.key === 'Escape') handleFormReset();
+    if (e.key === "Escape") handleFormReset();
   };
 
   const handleSubmit = async () => {
@@ -39,13 +37,13 @@ function PostForm({ userid, fetchUser, authorId }) {
           title: post.title,
           post: post.text,
           _id: userid,
-          author: authorId
+          author: authorId,
         }),
       });
       const data = await response.json();
       console.log(data);
-      handleFormReset()
-      fetchUser()
+      handleFormReset();
+      fetchUser();
     } catch (error) {
       console.log(error);
     }
@@ -77,15 +75,6 @@ function PostForm({ userid, fetchUser, authorId }) {
             value={post.text}
           ></textarea>
         </div>
-        {/* <div>
-          <button
-            type="button"
-            className="btn btn-primary mb-3"
-            onClick={handleSubmit}
-          >
-            Submit Post
-          </button>
-        </div> */}
       </form>
     </div>
   );

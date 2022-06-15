@@ -1,31 +1,26 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import  Navbar from "./Navbar"
+import Navbar from "./Navbar";
 const { DateTime } = require("luxon");
 
 function ProfileForm() {
-  // console.log(user)
-  //console.log(id)
   const { id } = useParams();
   let navigate = useNavigate();
-  
-  const [user, setUser] = useState({
-    firstname: '',
-    lastname: '',
-    username: '',
-    email: '',
-    birth_date: '',
-    hobbies: '',
-    bio: '',
-    profile_pic: ''
-  })
 
-  //const [user, setUser] = useState({})
+  const [user, setUser] = useState({
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+    birth_date: "",
+    hobbies: "",
+    bio: "",
+    profile_pic: "",
+  });
 
   useEffect(() => {
     fetchUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUser = async () => {
@@ -41,8 +36,7 @@ function ProfileForm() {
       return { ...prevInfo, [name]: value };
     });
   };
-  
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -61,7 +55,7 @@ function ProfileForm() {
         bio: user.bio,
         hobbies: user.hobbies,
         profile_pic: user.profile_pic,
-        _id: id
+        _id: id,
       }),
     })
       .then((response) => response.json()) //catch token here and save to local storage

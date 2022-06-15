@@ -29,7 +29,9 @@ function Login() {
           navigate("/userHome");
         } else if (data.error) {
           console.log(data.error);
-          data.error.forEach((error)=> {alert(error.msg)})
+          data.error.forEach((error) => {
+            alert(error.msg);
+          });
           navigate("/");
         }
       })
@@ -39,8 +41,8 @@ function Login() {
   };
 
   const handleKeyboard = (e) => {
-    if (e.key === 'Enter') handleSubmit();
-  }
+    if (e.key === "Enter") handleSubmit();
+  };
 
   const handleNewAccount = () => {
     navigate("/signup");
@@ -52,7 +54,7 @@ function Login() {
 
   return (
     <div className="container">
-      <h1 className="text-light text-center mb-5 mt-5">OdinBook</h1>
+      <h1 className="text-light text-center mb-5 mt-5">BurgerBook</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <div className="mb-2 w-50 mx-auto form-floating">

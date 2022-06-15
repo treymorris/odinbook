@@ -8,7 +8,6 @@ import Friends from "./components/Friends";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-
   return (
     <div className="bg-dark">
       <Router>

@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken");
 const { json } = require("express/lib/response");
 
 exports.get_one_comment = function (req, res) {
-  Comment.find({ post: req.params.id})
-    .populate('user')
-    .populate('author')
+  Comment.find({ post: req.params.id })
+    .populate("user")
+    .populate("author")
     .exec(function (err, results) {
       if (err) {
         return next(err);

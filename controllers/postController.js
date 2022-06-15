@@ -64,13 +64,13 @@ exports.create_post = [
       user: req.body._id,
       title: req.body.title,
       post: req.body.post,
-      author: req.body.author
+      author: req.body.author,
     }).save(function (err) {
       if (err) {
         return next(err);
       }
       res.json({
-        message: "Post Created!"
+        message: "Post Created!",
       });
     });
   },

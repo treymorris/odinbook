@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import CommentForm from "./CommentForm";
 const { DateTime } = require("luxon");
 
-
-function Comment({  postid, userid, fetchUser, authorId }) {
-  
-   const [comments, setComments] = useState([]);
+function Comment({ postid, userid, fetchUser }) {
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetchComments();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchComments = async () => {
@@ -17,7 +15,7 @@ function Comment({  postid, userid, fetchUser, authorId }) {
     const comments = await data.json();
     setComments(comments.comments);
   };
-  
+
   return (
     <div>
       {comments.map((comment) => (

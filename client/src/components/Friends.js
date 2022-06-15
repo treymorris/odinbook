@@ -23,9 +23,7 @@ function Friends() {
     const data = await fetch(`/api/users/${userid}`);
     const user = await data.json();
     setUser(user);
-    
   };
-  //console.log("user home page", user.user.friends);
 
   return (
     <div>
@@ -33,7 +31,10 @@ function Friends() {
       <h1 className="text-light text-center mt-3 mb-5">Friends</h1>
       <div className="d-flex flex-wrap justify-content-evenly">
         {user.friends.map((accepted, index) => (
-          <div className="card  bg-secondary p-3 mx-1 my-3 w-25 border-primary" key={index}>
+          <div
+            className="card  bg-secondary p-3 mx-1 my-3 w-25 border-primary"
+            key={index}
+          >
             <img
               src={
                 (accepted.from._id === user.user._id

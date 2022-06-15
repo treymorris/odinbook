@@ -1,4 +1,3 @@
-
 import PostForm from "./PostForm";
 import Post from "./Post";
 import { useEffect, useState } from "react";
@@ -20,12 +19,11 @@ function UserIndex() {
       },
     ],
   });
-  const friendsid = friends.map(element => element._id);
+  const friendsid = friends.map((element) => element._id);
   let navigate = useNavigate();
   const userImage = user.user.profile_pic
-  ? user.user.profile_pic
-  : "https://via.placeholder.com/150";
-  
+    ? user.user.profile_pic
+    : "https://via.placeholder.com/150";
 
   useEffect(() => {
     fetchUser();
@@ -39,10 +37,9 @@ function UserIndex() {
     setUser(user);
     setUsersPosts(user.users_posts);
     setComments(user.comments);
-    setFriends(user.user.friends)
+    setFriends(user.user.friends);
   };
-  
-  
+
   const handleClick = async () => {
     try {
       const response = await fetch("/api/friends/request", {
@@ -83,8 +80,7 @@ function UserIndex() {
       console.log(error);
     }
   };
-  
-  
+
   return (
     <div>
       <Navbar />
@@ -103,32 +99,36 @@ function UserIndex() {
           </div>
         </div>
 
-        <div className="profileInfo">
+        <div className="profileInfo px-1">
           <div>
-            <h1 className="text-light my-auto ms-5 mt-3">{user.user.username}</h1>
+            <h1 className="text-light my-auto ms-5 mt-3">
+              {user.user.username}
+            </h1>
           </div>
-            <div className="ms-5 mt-2">
-              <img src={userImage} alt="current user"></img>
-            </div>
+          <div className="ms-5 mt-2">
+            <img src={userImage} alt="current user"></img>
+          </div>
           <p className="text-light mt-2  ms-5">
             {user.user.firstname} {user.user.lastname}
           </p>
           <p className="text-light mt-1  ms-5">{user.user.email}</p>
           <p className="text-light mt-2  ms-5">
             Birthday:{" "}
-            {DateTime.fromISO(user.user.birth_date).toLocaleString(
-              DateTime.DATE_MED
-            )}
+            {user.user.birth_date !== undefined &&
+              DateTime.fromISO(user.user.birth_date).toLocaleString(
+                DateTime.DATE_MED
+              )}
           </p>
           <p className="text-light ms-5">Hobbies: {user.user.hobbies}</p>
           <p className="text-light ms-5">{user.user.bio}</p>
-          {!friendsid.includes(userid) &&
+          {!friendsid.includes(userid) && (
             <button
-            className="btn btn-primary p-2 mt-3 ms-5"
-            onClick={handleClick}
-          >
-            Send Friend Request
-          </button>}
+              className="btn btn-primary p-2 mt-3 ms-5"
+              onClick={handleClick}
+            >
+              Send Friend Request
+            </button>
+          )}
         </div>
       </div>
     </div>

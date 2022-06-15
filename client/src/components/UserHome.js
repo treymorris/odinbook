@@ -82,6 +82,7 @@ function UserHome() {
     const user = await data.json();
     setUser(user);
     setUsersPosts(user.users_posts);
+    setFriendsList(user.user.friends);
   };
 
   const fetchUsers = async () => {
@@ -116,23 +117,20 @@ function UserHome() {
     }
   };
 
-  const requests = friendRequests.filter((friend) => friend.to._id === userid); //list of users that have sent friend requests
-  const friendsList = user.user.friends
-  //console.log(friendsList)
-  let usersList = users.filter((user) => user._id !== userid); //list of users that are not me
-  //console.log(usersList)
-  function newArray() {
-    if (friendsList !== null) {
-      return usersList = usersList.filter(
-        ({ _id: id1 }) => !friendsList.some(({ _id: id2 }) => id2 === id1)
-      )
-      
-    }
-  }
-newArray();
-//console.log(usersList)
+  const [friendsList, setFriendsList] = useState([]);
 
-return (
+  //list of users that have sent friend requests
+  const requests = friendRequests.filter((friend) => friend.to._id === userid);
+
+  //list of users that are not me
+  let usersList = users.filter((user) => user._id !== userid);
+
+  //list of users that are not friends
+  let newList = (usersList = usersList.filter(
+    ({ _id: id1 }) => !friendsList.some(({ _id: id2 }) => id2 === id1)
+  ));
+
+  return (
     <div className="bg-dark">
       <Navbar />
       <div className="row">
@@ -242,7 +240,7 @@ return (
       <div className="row">
         <div className="w-25 col-1">
           <h5 className="text-light p-3 ms-3">Users</h5>
-          {usersList.map((user) => (
+          {newList.map((user) => (
             <NavLink
               key={user._id}
               className="p-3 ms-4 nav-link  bg-dark w-85 border border-primary"

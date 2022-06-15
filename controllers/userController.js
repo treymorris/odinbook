@@ -11,8 +11,8 @@ const Friend = require("../models/friend");
 
 exports.get_users = function (req, res) {
   User.find({})
-    .populate({path: "friends", model: "User"})
-    //.sort([["username", "ascending"]])
+    .populate({ path: "friends", model: "User" })
+    .sort([["username", "ascending"]])
     .exec(function (err, results) {
       if (err) {
         return next(err);
@@ -31,7 +31,7 @@ exports.get_one_user = function (req, res, next) {
           .populate({
             path: "friends",
             model: "User",
-            })
+          })
           .exec(callback);
       },
       users_posts: function (callback) {
@@ -47,7 +47,10 @@ exports.get_one_user = function (req, res, next) {
           .exec(callback);
       },
       friends: function (callback) {
-        Friend.find({ $or: [{to: req.params.id}, {from: req.params.id}], status: "Accepted" })
+        Friend.find({
+          $or: [{ to: req.params.id }, { from: req.params.id }],
+          status: "Accepted",
+        })
           .populate("from to")
           .exec(callback);
       },
@@ -93,7 +96,8 @@ exports.user_signup = [
 
   (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
     bcrypt.hash(req.body.password, 10, (err, hashedPass) => {
       if (err) return next(err);
       const user = new User({
@@ -108,7 +112,7 @@ exports.user_signup = [
         }
         return res.json({
           message: "success!",
-          user
+          user,
         });
       });
     });
@@ -146,65 +150,24 @@ exports.user_logout = function (req, res) {
   res.json({ message: "Logout success!" });
 };
 
-// exports.user_create_profile = [
-//   body("occupation", "Please enter your occupation.")
-//     .optional()
-//     .trim()
-//     .isLength({ max: 25 })
-//     .escape(),
-//   body("hobbies", "Please enter a hobby.")
-//     .optional()
-//     .trim()
-//     .isLength({ max: 250 })
-//     .escape(),
-
-//   (req, res, next) => {
-//     const errors = validationResult(req);
-
-//     if (!errors.isEmpty()) return res.json({ errors: errors.array() });
-
-//     const profile = new Profile({
-//       user: req.body.user,
-//       birth_date: req.body.birth_date,
-//       occupation: req.body.occupation,
-//       profile_pic: req.body.profile_pic,
-//       hobbies: req.body.hobbies,
-//     }).save(function (err) {
-//       if (err) {
-//         return next(err);
-//       }
-//     });
-//     res.json({
-//       message: "Profile created!",
-//     });
-//   },
-// ];
-
 exports.user_profile_update = [
   body("firstname", "Please enter a first name!")
-    
     .trim()
     .isLength({ min: 1 })
     .escape()
     .isAlphanumeric()
     .withMessage("First name has non-alphanumeric characters."),
   body("lastname", "Please enter a last name!")
-    
     .trim()
     .isLength({ min: 1 })
     .escape()
     .isAlphanumeric()
     .withMessage("Last name has non-alphanumeric characters."),
   body("username", "Please enter a Username!")
-    
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("email", "Email required!")
-    
-    .trim()
-    .isEmail()
-    .escape(),
+  body("email", "Email required!").trim().isEmail().escape(),
   body("birthday", "Please enter a Date!")
     .optional({ checkFalsy: true })
     .isISO8601()
